@@ -18,7 +18,7 @@ for(const id of getAllHoleIds()) {
                 elemById.classList.remove('animating-whack')}, 500);
             score++;
             scoreText.innerText = score;
-            if (score >= 45){
+            if (score = 46){
                 clearInterval(interval);
             }
         }        
