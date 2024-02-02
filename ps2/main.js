@@ -20,46 +20,42 @@ getRandomAnswer((answer) => {
 });
 
 // TODO: Fill in your code here
-displayGuessFeedback((guess) => {
-    const guessDiv = document.createElement('div');
-    guessDiv.className = 'guess';
+function displayGuessFeedback(guess){
+    console.log(guess);
     for (let i=0; i<guess.length; i++){
-        const spanElem = document.createElement('span');
-        spanElem.className = 'letter';
+        console.log(guess[i]);
         const letter = guess[i].toUpperCase();
+        console.log(letter);
+        const spanElem = document.createElement('span').classList.add(letter);
         const correctLetter = correctAnswer[i].toUpperCase();
-        if (letter == correctLetter) {
+        if (letter === correctLetter){
             spanElem.classList.add('correct');
         } else if (correctAnswer.toUpperCase().includes(letter)) { 
             spanElem.classList.add('present');
         } else {
             spanElem.classList.add('absent');
         }
-        spanElem.textContent = letter;
+        spanElem.innerText = letter;
         guessDiv.append(spanElem);
-
     }
-    const existingDiv = document.getElementById('guesses');
-    existingDiv.append(guessDiv);
-});
+    const existingDiv = document.querySelector("#guesses");
+    existingDiv.append(guessDiv)
+}
+
 
 // Step 1: Define a function displayGuessFeedback(guess) that takes a guess and displays it on the page.
 // It should accept one argument (guess, a string) and will display feedback for that guess on the page.
 // Steps:
-// 1. Create a new <div> element with class 'guess' DONE
-// 2. For each letter in the guess, create a new <span> element with class 'letter' DONE
+// 1. Create a new <div> element with class 'guess' 
+// 2. For each letter in the guess, create a new <span> element with class 'letter' 
 //         HINT: You can use the following code to iterate over each letter of the guess and each correct letter:
 //         for(let i = 0; i<guess.length; i++) {
 //             const letter = guess[i].toUpperCase();
 //             const correctLetter = correctAnswer[i].toUpperCase();
 //             if(letter === correctLetter) {
-//                  ...
 //             } else if(correctAnswer.toUpperCase().includes(letter)) {
-//                  ...
 //             } else {
-//                  ...
 //             }
-//         ...
 //      2.a. If the letter is in the correct position, add the (additional) class 'correct' to the <span> element
 //      2.b. If the letter is in the answer but not in the correct position, add the (additional) class 'present' to the <span> element
 //      2.c. If the letter is not in the answer, add the (additional) class 'absent' to the <span> element
@@ -69,7 +65,35 @@ displayGuessFeedback((guess) => {
 // 4. Try it out by calling displayGuessFeedback('hello') and displayGuessFeedback('world')
 // 
 
+displayGuessFeedback('hello');
 
+inputEl.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter'){
+        const inpVal = inputEl.value;
+        console.log(inpVal);
+        console.log(correctAnswer);
+        if (inpVal.length != WORD_LENGTH){
+            showInfoMessage("Your guess must be " + WORD_LENGTH + " letters long.");
+        } 
+        if (inpVal === correctAnswer){
+            showInfoMessage("You win! The answer was {correctAnswer}");
+            inputEl.disabled = true;
+        }
+        if (inpVal != correctAnswer){
+            if (isValidWord(inpVal, true)){
+                displayGuessFeedback();
+            } else {
+                showInfoMessage("{guess} is not a valid word.");
+            }
+            isValidWord(inpVal);
+            inpVal = "";
+        }
+    }
+    else {
+        clearInfoMessage();
+    }
+}
+)
 // Step 2: Add an event listener to the input element that listens for the 'keydown' event.
 // 1. When the user presses the 'Enter' key, the event listener should:
 //     1.a. Get the value of the input element (which is the guess)
