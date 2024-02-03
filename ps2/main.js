@@ -52,6 +52,7 @@ inputEl.addEventListener('keydown', (ev) => {
             showInfoMessage("Your guess must be " + WORD_LENGTH + " letters long.");
         } 
         else if (inpVal === correctAnswer){
+            displayGuessFeedback(inpVal);
             showInfoMessage("You win! The answer was " + correctAnswer);
             inputEl.disabled = true;
         }
