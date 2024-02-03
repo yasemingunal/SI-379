@@ -24,6 +24,7 @@ function displayGuessFeedback(guess){
     console.log(correctAnswer);
     const divGuesses = document.querySelector("#guesses");
     const divElem = document.createElement('div');
+    divElem.classList.add('guess');
     for(let i=0; i<guess.length; i++){
         const spanElem = document.createElement('span');
         spanElem.classList.add('letter');
@@ -37,9 +38,9 @@ function displayGuessFeedback(guess){
             spanElem.classList.add('absent');
         }
         spanElem.textContent = letter;
-        divElem.appendChild(spanElem);   
+        divElem.append(spanElem);   
     };
-    divGuesses.appendChild(divElem);
+    divGuesses.append(divElem);
 };
 
 inputEl.addEventListener('keydown', (ev) => {
@@ -50,11 +51,12 @@ inputEl.addEventListener('keydown', (ev) => {
         if (inpVal.length != WORD_LENGTH){
             showInfoMessage("Your guess must be " + WORD_LENGTH + " letters long.");
         } 
-        if (inpVal === correctAnswer){
-            showInfoMessage("You win! The answer was {correctAnswer}");
+        else if (inpVal === correctAnswer){
+            showInfoMessage("You win! The answer was " + correctAnswer);
             inputEl.disabled = true;
         }
-        if (inpVal != correctAnswer){
+        else if (inpVal != correctAnswer){
+            inputEl.value = "";
             isValidWord(inpVal, (isValid) => {
                 if (isValid){
                     displayGuessFeedback(inpVal);
