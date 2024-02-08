@@ -2,15 +2,17 @@
 //const timeoutId = setTimeout(); //pass to clearTimeout(timeoutId) to clear
 
 getUMEventsWithImages((events) => {
-    console.log(events);
+    const eventList = events;
+    console.log(eventList);
     const thumbDiv = document.querySelector("#thumbnails");
     const imgList = document.createElement("ul");
-    for (obj in events){
+    for (const idx = 0; idx < eventList.length; idx++){
         const imgLi = document.createElement('li');
         const img = document.createElement('img');
-        img.src = obj['image_url'];
+        img.src = eventList[idx].image_url;
+        // img.src = currEv;
         imgLi.append(img);
-        imgList.append(imgLi);   
+        imgList.append(imgLi); 
     }
     console.log(imgList);
     
@@ -19,7 +21,9 @@ getUMEventsWithImages((events) => {
     // }
 });
 
+// function setSelectedIndex((i) => {
 
+// });
 // const eventsArray = getUMEventsWithImages(events);
 // console.log(eventsArray);
 // // function setSelectedIndex((i) => { 
