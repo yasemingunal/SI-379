@@ -17,16 +17,8 @@ getUMEventsWithImages((events) => {
         newImg.addEventListener('click', () => { 
             setSelectedIndex(i);
         });
-        
-
-        //console.log(newImg.src);
     };
     setSelectedIndex(0);
-    // clearTimeout(timer);
-    // timer = setTimeout(() => {
-    //     selectedIndex = (selectedIndex + 1) % events.length;
-    //     setSelectedIndex(selectedIndex);
-    // }, 10000);
 
 });
 
