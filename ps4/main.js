@@ -61,6 +61,7 @@ function shuffleArray(array) {
 
 const quizElement = document.querySelector("#quiz");
 const scoreEl = document.querySelector("#score");
+let score = 0
 
 function getQuestionData(){
     const finalVal = fetchWithCache('https://the-trivia-api.com/v2/questions').then(response => response.json());
@@ -68,15 +69,34 @@ function getQuestionData(){
     return finalVal;
 };
 
-function createQuizQuestion(question, answerList){
+function createQuizQuestion(question, answerList, correctAnswer){
     const li = document.createElement('li');
     const questionDisplay = document.createElement('p');
     const answerDisplay = document.createElement('ul');
     questionDisplay.innerText = question;
     for (let i = 0; i<answerList.length; i++){
         let ansItem = document.createElement('li');
+        let ansButton = document.createElement('button');
+        ansButton.setAttribute('id', `${i}`)
         let ansContent = answerList[i];
-        ansItem.append(ansContent);
+        ansButton.innerHTML = ansContent;
+        ansItem.append(ansButton);
+
+        let correctOrNot = document.createElement('p');
+        ansButton.addEventListener('click', ()=>{
+            if (ansButton.innerHTML === correctAnswer){
+                console.log("correct");
+                score++;
+                scoreEl.innerHTML = `Your Score: ${score}`;
+                correctOrNot.innerText = 'correct!';
+                ansButton.classList.add('correctAnswer');
+            }
+            else{
+                console.log("incorrect");
+                correctOrNot.innerText = 'incorrect!';
+            }
+        });
+        //
         answerDisplay.append(ansItem);
     }
     li.append(questionDisplay);
@@ -89,12 +109,11 @@ async function displayQuiz(){
     for (const result of response) {
         let answers = result.incorrectAnswers;
         answers.push(result.correctAnswer);
-        answers = shuffleArray(answers);
-        console.log(result.question.text)
-        console.log(answers); 
-        let li = createQuizQuestion(result.question.text, answers);
+        answers = shuffleArray(answers); 
+        let li = createQuizQuestion(result.question.text, answers, result.correctAnswer);
         quizElement.append(li);
     }
 }
 
 displayQuiz();
+
