@@ -69,61 +69,69 @@ function getQuestionData(){
     return finalVal;
 };
 
-function createQuizQuestion(question, answerList, correctAnswer){
+function createQuizQuestion(question, answerList, correctAnswer, sectionClassVal){
     const li = document.createElement('li');
+    li.setAttribute('class', sectionClassVal);
     const questionDisplay = document.createElement('p');
     const answerDisplay = document.createElement('ul');
     questionDisplay.innerText = question;
     for (let i = 0; i<answerList.length; i++){
         let ansItem = document.createElement('li');
         let ansButton = document.createElement('button');
-        //ansButton.setAttribute('id', `${i}`)
         let ansContent = answerList[i];
         ansButton.innerHTML = ansContent;
         ansItem.append(ansButton);
         answerDisplay.append(ansItem)
-    };
+        ansButton.setAttribute('class', sectionClassVal);
+        if(ansContent === correctAnswer){
+            ansButton.setAttribute('id', 'correctAnswerButton');
+        } 
+        else{
+            ansButton.setAttribute('id', 'wrongAnswerButton');
+        }
 
-        // ansButton.addEventListener('click', ()=>{
-        //     if (ansButton.innerHTML === correctAnswer){
-        //         console.log("correct");
-        //         score++;
-        //         scoreEl.innerHTML = `Your Score: ${score}`;
-        //         //ansButton.style.color = "green";
-        //         //ansButton.style.backgroundColor = 'green';
-        //         ansButton.classList.add("correctAnswer");
-        //         //console.log(ansButton.getAttribute('id'));
-        //     }
-        //     else{
-        //         console.log("incorrect");
-        //     }
-        // });
-        // ;
-    //}
+    };
     li.append(questionDisplay);
     li.append(answerDisplay);
+
     return li;
 }
 async function displayQuiz(){
     const response = await getQuestionData();
-    
+    let sectionClass = 0;
     for (const result of response) { 
+        sectionClass++;
         let answers = result.incorrectAnswers;
         answers.push(result.correctAnswer);
         answers = shuffleArray(answers); 
-        let li = createQuizQuestion(result.question.text, answers, result.correctAnswer);
+        let li = createQuizQuestion(result.question.text, answers, result.correctAnswer, "class"+sectionClass);
         quizElement.append(li);
     }
+    let numQuestionsAttempted = 0;
+
     let buttons = document.querySelectorAll('button');
     for (let eachButton of buttons){
         eachButton.addEventListener('click', () =>{
-            if (eachButton.innerHTML === result.correctAnswer){ //cannot access result (defined in prev loop)
-                console.log('correct');
+            numQuestionsAttempted++;
+            let thisClass = eachButton.className;
+            console.log(thisClass);
+            if (eachButton.id === 'correctAnswerButton'){
+                console.log("correct answer selected");
+                score++;
                 eachButton.classList.add('correctAnswer');
             }
+            else { 
+                console.log('wrong answer selected');
+                eachButton.classList.add('wrongAnswer');
+            }
+            scoreEl.innerHTML = `Your score: ${score} of ${numQuestionsAttempted}`;
+            let allSectionButtons = document.querySelectorAll("." + thisClass);
+            allSectionButtons.forEach(button => {
+                button.setAttribute('disabled', true);
+            })
+
         })
     }
-
 }
 
 displayQuiz();
