@@ -59,51 +59,40 @@ function shuffleArray(array) {
     return shuffledArray; // Return the shuffled copy
 }
 
-// const url = 'https://the-trivia-api.com/v2/questions';
-// const responsePromise = fetch(url);
-// constDataPromise = responsePromise.then((response) => {
-//     console.log(response);
-//     response.json().then((data)=>{
-//         console.log(data);
-//     })
-//     //return response.json();
-// });
-
 const quizElement = document.querySelector("#quiz");
+const scoreEl = document.querySelector("#score");
 
 function getQuestionData(){
-    const finalVal = fetch('https://the-trivia-api.com/v2/questions').then(response => response.json());
+    const finalVal = fetchWithCache('https://the-trivia-api.com/v2/questions').then(response => response.json());
     console.log(finalVal);
     return finalVal;
-    // const jsonPromise = promiseObject.then((value) =>{
-    //     console.log(value); // prints the response object
-    //     const jsonValue = value.json();
-    //     return jsonValue;
-    // });
-    // return jsonPromise.then((value) => {
-    //     console.log(value); // prints JSON Object
-    // })
 };
 
-//getQuestionData();
-
-function createQuiz(question, incorrectAnswers, correctAnswer){
-    const ul = document.createElement('ul');
-    const questionDisplay = document.createElement('a');
+function createQuizQuestion(question, answerList){
+    const li = document.createElement('li');
+    const questionDisplay = document.createElement('p');
+    const answerDisplay = document.createElement('ul');
     questionDisplay.innerText = question;
-    const allAnswers = incorrectAnswers.push(correctAnswer);
-    const shuffledAnswers = shuffleArray(allAnswers);
-    for(let answer in shuffledAnswers){
-        let li = document.createElement('li');
-        li.append(answer);
-        ul.append(li);
+    for (let i = 0; i<answerList.length; i++){
+        let ansItem = document.createElement('li');
+        let ansContent = answerList[i];
+        ansItem.append(ansContent);
+        answerDisplay.append(ansItem);
     }
-
+    li.append(questionDisplay);
+    li.append(answerDisplay);
+    return li;
 }
 async function displayQuiz(){
     const response = await getQuestionData();
-    for (const result of response.results) { 
-        const li = createQuiz(result.question, result.incorrectAnswers, result.correctAnswer);
+    
+    for (const result of response) {
+        let answers = result.incorrectAnswers;
+        answers.push(result.correctAnswer);
+        answers = shuffleArray(answers);
+        console.log(result.question.text)
+        console.log(answers); 
+        let li = createQuizQuestion(result.question.text, answers);
         quizElement.append(li);
     }
 }
