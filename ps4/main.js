@@ -77,24 +77,29 @@ function createQuizQuestion(question, answerList, correctAnswer){
     for (let i = 0; i<answerList.length; i++){
         let ansItem = document.createElement('li');
         let ansButton = document.createElement('button');
-        ansButton.setAttribute('id', `${i}`)
+        //ansButton.setAttribute('id', `${i}`)
         let ansContent = answerList[i];
         ansButton.innerHTML = ansContent;
         ansItem.append(ansButton);
+        answerDisplay.append(ansItem)
+    };
 
-        ansButton.addEventListener('click', ()=>{
-            if (ansButton.innerHTML === correctAnswer){
-                console.log("correct");
-                score++;
-                scoreEl.innerHTML = `Your Score: ${score}`;
-                ansButton.classList.add('correctAnswer');
-            }
-            else{
-                console.log("incorrect");
-            }
-        });
-        answerDisplay.append(ansItem);
-    }
+        // ansButton.addEventListener('click', ()=>{
+        //     if (ansButton.innerHTML === correctAnswer){
+        //         console.log("correct");
+        //         score++;
+        //         scoreEl.innerHTML = `Your Score: ${score}`;
+        //         //ansButton.style.color = "green";
+        //         //ansButton.style.backgroundColor = 'green';
+        //         ansButton.classList.add("correctAnswer");
+        //         //console.log(ansButton.getAttribute('id'));
+        //     }
+        //     else{
+        //         console.log("incorrect");
+        //     }
+        // });
+        // ;
+    //}
     li.append(questionDisplay);
     li.append(answerDisplay);
     return li;
@@ -102,13 +107,23 @@ function createQuizQuestion(question, answerList, correctAnswer){
 async function displayQuiz(){
     const response = await getQuestionData();
     
-    for (const result of response) {
+    for (const result of response) { 
         let answers = result.incorrectAnswers;
         answers.push(result.correctAnswer);
         answers = shuffleArray(answers); 
         let li = createQuizQuestion(result.question.text, answers, result.correctAnswer);
         quizElement.append(li);
     }
+    let buttons = document.querySelectorAll('button');
+    for (let eachButton of buttons){
+        eachButton.addEventListener('click', () =>{
+            if (eachButton.innerHTML === result.correctAnswer){ //cannot access result (defined in prev loop)
+                console.log('correct');
+                eachButton.classList.add('correctAnswer');
+            }
+        })
+    }
+
 }
 
 displayQuiz();
