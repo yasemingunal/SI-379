@@ -1,5 +1,6 @@
 .correctAnswer{
     background-color:green;
+    border-color:blue;
     color:green;
     font-weight:bold;
 }

@@ -82,21 +82,17 @@ function createQuizQuestion(question, answerList, correctAnswer){
         ansButton.innerHTML = ansContent;
         ansItem.append(ansButton);
 
-        let correctOrNot = document.createElement('p');
         ansButton.addEventListener('click', ()=>{
             if (ansButton.innerHTML === correctAnswer){
                 console.log("correct");
                 score++;
                 scoreEl.innerHTML = `Your Score: ${score}`;
-                correctOrNot.innerText = 'correct!';
                 ansButton.classList.add('correctAnswer');
             }
             else{
                 console.log("incorrect");
-                correctOrNot.innerText = 'incorrect!';
             }
         });
-        //
         answerDisplay.append(ansItem);
     }
     li.append(questionDisplay);
