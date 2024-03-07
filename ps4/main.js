@@ -127,12 +127,16 @@ async function displayQuiz(){
             scoreEl.innerHTML = `Your score: ${score} of ${numQuestionsAttempted}`;
             let allSectionButtons = document.querySelectorAll("." + thisClass);
             allSectionButtons.forEach(button => {
+                if (button.id === 'correctAnswerButton'){
+                    button.classList.add('correctAnswer')
+                }
                 button.setAttribute('disabled', true);
             })
-
         })
     }
 }
+
+
 
 displayQuiz();
 
