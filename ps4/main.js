@@ -59,12 +59,13 @@ function shuffleArray(array) {
     return shuffledArray; // Return the shuffled copy
 }
 
+
 const quizElement = document.querySelector("#quiz");
 const scoreEl = document.querySelector("#score");
 let score = 0
 
 function getQuestionData(){
-    const finalVal = fetchWithCache('https://the-trivia-api.com/v2/questions').then(response => response.json());
+    const finalVal = fetch('https://the-trivia-api.com/v2/questions').then(response => response.json());
     console.log(finalVal);
     return finalVal;
 };
