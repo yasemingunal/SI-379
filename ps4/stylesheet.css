@@ -16,6 +16,11 @@ button {
     border-color:green;
     color:green;
     font-weight:bold;
+
+}
+
+.correctAnswer::after{
+    content: "\2714";
 }
 
 .wrongAnswer{
@@ -23,6 +28,11 @@ button {
     color:red;
     font-weight:bold;
 }
+
+.wrongAnswer::after{
+    content: "\2716";
+}
+
 
 .disappear { 
     display:none;

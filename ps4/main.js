@@ -119,10 +119,12 @@ async function displayQuiz(){
                 console.log("correct answer selected");
                 score++;
                 eachButton.classList.add('correctAnswer');
+                eachButton.classList.add('correctAnswer::after');
             }
             else { 
                 console.log('wrong answer selected');
                 eachButton.classList.add('wrongAnswer');
+                eachButton.classList.add('wrongAnswer::after');
             }
             scoreEl.innerHTML = `Your score: ${score} of ${numQuestionsAttempted}`;
             let allSectionButtons = document.querySelectorAll("." + thisClass);
