@@ -23,3 +23,11 @@ button {
     color:red;
     font-weight:bold;
 }
+
+.disappear { 
+    display:none;
+}
+
+.appear{
+    display:block;
+}

@@ -136,7 +136,5 @@ async function displayQuiz(){
     }
 }
 
-
-
 displayQuiz();
 
