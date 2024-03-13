@@ -3,12 +3,10 @@ import chroma from "chroma-js";
 
 const BALL_COLOR = "#2F65A7";     // The color of the balls: [Arboretum Blue](https://brand.umich.edu/design-resources/colors/)
 
-const numBallsInput = document.querySelector('#num_balls');
-const inpProb = document.querySelector('#probability');
+let numBallsInput = document.querySelector('#num_balls');
+let inpProb = document.querySelector('#probability');
 
-const NUM_BALLS = numBallsInput.value;//document.querySelector('#num_balls').value; //10;              // The number of balls to drop
-
-
+const NUM_BALLS = 10;              // The number of balls to drop
 const GRAPH_HEIGHT = 300;          // The maximum height of the graph (in pixels)
 const BALL_RADIUS = 10;            // The radius of the balls (in pixels)
 const PEG_RADIUS = 3;              // The radius of the pegs (in pixels)
@@ -17,14 +15,13 @@ const Y_MOVEMENT = 20;             // The vertical distance between pegs (in pix
 const DELAY_BETWEEN_BALLS = 1000;  // How long to wait between dropping balls (in milliseconds)
 const DELAY_BETWEEN_PEGS  = 1000;  // How long it takes for a ball to drop from one peg to the next (in milliseconds)
 const DELAY_WHEN_DROP     = 1000;  // How long it takes for the ball to "fall" into the hole (in milliseconds)
-const PROBABILITY_RIGHT = document.querySelector('#probability').value; //0.5;     // The probability of a ball going right (as opposed to left)
+const PROBABILITY_RIGHT = 0.5;     // The probability of a ball going right (as opposed to left)
 const PADDING = Math.max(PEG_RADIUS, BALL_RADIUS, X_MOVEMENT/2) + 5; // The padding around the edge of the SVG element (in pixels)
 
 const svgElement      = document.querySelector('svg');         // The parent SVG container
 const numLevelsInput  = document.querySelector('#num-levels'); // The input for the number of levels
 const dropBallsButton = document.querySelector('#do-drop');    // The button to drop the balls
 const speedInput      = document.querySelector('#speed');      // The input for the speed of the animation
-
 
 const pegs = []; // A 2D array of pegs (each peg is a circle element)
 const actualBars = []; // An array of the number of balls that actually hit each bar
@@ -34,6 +31,8 @@ function drawBoard() {
     Array.from(svgElement.children).forEach(child => child.remove()); // Remove all the children of the SVG element
 
     const NUM_LEVELS = parseInt(numLevelsInput.value); // How many levels of pegs to have
+    const NUM_BALLS = parseInt(numBallsInput.value);
+    const PROBABILITY_RIGHT = inpProb.value;
 
     const TOTAL_WIDTH  = (NUM_LEVELS-1) * X_MOVEMENT + 2 * PADDING;                // The total width of the SVG element (in pixels)
     const TOTAL_HEIGHT = (NUM_LEVELS-1) * Y_MOVEMENT + 2 * PADDING + GRAPH_HEIGHT; // The total height of the SVG element (in pixels)
