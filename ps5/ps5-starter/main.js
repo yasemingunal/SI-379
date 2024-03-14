@@ -105,8 +105,6 @@ function drawBoard() {
 
             const { x, y } = getGraphicLocation(col, row); // The new location of the ball (in pixels)
             await moveCircleTo(circle, x, y, DELAY_BETWEEN_PEGS / parseFloat(speedInput.value)); // Move the ball to the new location
-
-
             
             const peg = pegs[row][col]; // The peg that the ball hit
             let pegScale = chroma.scale('yellow', 'navy').domain([0, 100]);
@@ -176,17 +174,61 @@ function drawBoard() {
 
 // Animates the height of a rectangle from its current height to a new height
 async function changeHeightTo(rect, toHeight, duration) {
-    await pause(duration);
-    rect.setAttribute('height', toHeight);
-}
+    //await pause(duration);
+    function easeInQuad(t){ return t*t;};
+    return new Promise((resolve, reject) => {
+
+        const animationStarted = Date.now();
+        const fromHeight = parseFloat(rect.getAttribute('height'));
+
+        function step(){
+            const pct = (Date.now() - animationStarted) / duration;
+            const pos = easeInQuad(pct);
+            const value = fromHeight + (toHeight - fromHeight) * pos;
+            rect.setAttribute('height', value);
+
+            if (pct < 1) {
+                requestAnimationFrame(step);
+            } else {
+                rect.setAttirbute('height', toHeight);
+                resolve();
+            }
+        }
+        step();
+    });
+};
 
 // Animates the movement of a circle to a new location
 async function moveCircleTo(circle, cx, cy, duration) {
-    await pause(duration);
-    circle.setAttribute('cx', cx);
-    circle.setAttribute('cy', cy);
+    //await pause(duration);
+    function easeOutQuad(t){return t*(2-t);};
+
+    return new Promise(resolve => {
+        const fromX = parseFloat(circle.getAttribute('cx'));
+        const fromY = parseFloat(circle.getAttribute('cy'));
+        const animationStarted = Date.now();
+
+        function step(){
+            const pct = (Date.now() - animationStarted) / duration;
+            const pos = easeOutQuad(pct);
+            const newX = fromX + (cx - fromX) * pos;
+            const newY = fromY + (cy - fromY) * pos;
+
+            circle.setAttribute('cx', newX);
+            circle.setAttribute('cy', newY);
+
+            if (pct < 1){
+                requestAnimationFrame(step);
+            } else { 
+                circle.setAttribute('cx', cx);
+                resolve();
+            }
+        }
+        step();
+    });
 };
 
+//yg: add the asnc function doAnimation() thing here?? somehwere??
 
 /**
  * Translates a column and row into a pixel location
@@ -273,4 +315,6 @@ function redrawBoard() {
     clearBoard(); // Clean up the old board
     clearBoard = drawBoard(); // Draw the new board (and store the cleanup function)
 }
+
+
 
