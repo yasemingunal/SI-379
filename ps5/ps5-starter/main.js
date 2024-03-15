@@ -261,6 +261,8 @@ async function changeCircleOpacity(circle, duration){
             circle.setAttribute('opacity', opac);
             if (pct <1){
                 requestAnimationFrame(step);
+            } else{
+                resolve();
             }
         }
         step();
