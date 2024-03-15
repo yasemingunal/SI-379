@@ -228,7 +228,7 @@ async function moveCircleTo(circle, cx, cy, duration) {
     });
 };
 
-//yg: add the asnc function doAnimation() thing here?? somehwere??
+
 
 /**
  * Translates a column and row into a pixel location
