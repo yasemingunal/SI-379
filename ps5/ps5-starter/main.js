@@ -107,14 +107,15 @@ function drawBoard() {
             await moveCircleTo(circle, x, y, DELAY_BETWEEN_PEGS / parseFloat(speedInput.value)); // Move the ball to the new location
             
             const peg = pegs[row][col]; // The peg that the ball hit
-            let pegScale = chroma.scale('yellow', 'navy').domain([0, 100]);
+            let pegScale = chroma.scale(['white', 'darkred']).domain([0,1]);
 
             hitCounts[row][col]++; // Increment the hit count for this peg
             if(hitCounts[row][col] === 1) { // If this is the first time the peg was hit (i.e. the peg was not hit before this ball was dropped
                 //peg.setAttribute('fill', pegScale(hitCounts[row][col]))
-                peg.setAttribute('fill', 'lightgreen'); // Change the color of the peg to indicate that it was hit
+                peg.setAttribute('fill', pegScale(hitCounts[row][col]/NUM_BALLS)); // Change the color of the peg to indicate that it was hit
             } else {
-                peg.setAttribute('fill', chroma('lightgreen').darken(hitCounts[row][col]));//pegScale((hitCounts[row][col])); // Change the color of the peg to indicate that it was hit
+                //let color = pegScale(hitCounts[row][col]/NUM_BALLS);
+                peg.setAttribute('fill', pegScale(hitCounts[row][col]/NUM_BALLS));//pegScale((hitCounts[row][col])); // Change the color of the peg to indicate that it was hit
             }
         }
 
