@@ -126,8 +126,10 @@ function drawBoard() {
         const animPromise1 = changeHeightTo(actualBars[barIndex], newBarHeight, DELAY_WHEN_DROP / parseFloat(speedInput.value)); // Animate the change in height of the bar
         //ADD ANIMATION OF MOVING DOWN 20px and opacity to 0 await[...] 
         const animPromise2 = animateCircleWhenLanded(circle, DELAY_WHEN_DROP / parseFloat(speedInput.value));
+        //const animPromise2 = animateCircleWhenLanded(circle, 5000);
+        const animPromise3 = changeCircleOpacity(circle, DELAY_WHEN_DROP / parseFloat(speedInput.value));
+        await Promise.all([animPromise1, animPromise2, animPromise3]);
         circle.remove(); // Remove the circle from the SVG element
-        await Promise.all([animPromise1, animPromise2]);
     }
 
     async function dropBalls() {
@@ -191,7 +193,7 @@ async function changeHeightTo(rect, toHeight, duration) {
             if (pct < 1) {
                 requestAnimationFrame(step);
             } else {
-                rect.setAttirbute('height', toHeight);
+                rect.setAttribute('height', toHeight);
                 resolve();
             }
         }
@@ -202,7 +204,6 @@ async function changeHeightTo(rect, toHeight, duration) {
 // Animates the movement of a circle to a new location
 async function moveCircleTo(circle, cx, cy, duration) {
     //await pause(duration);
-
     return new Promise(resolve => {
         const fromX = parseFloat(circle.getAttribute('cx'));
         const fromY = parseFloat(circle.getAttribute('cy'));
@@ -229,17 +230,15 @@ async function moveCircleTo(circle, cx, cy, duration) {
 
     });
 };
-
 async function animateCircleWhenLanded(circle, duration){
-    return newPromise(resolve=>{
+    return new Promise(resolve=>{
         const fromY = parseFloat(circle.getAttribute('cy'));
         const animationStarted = Date.now();
         function step(){
             const pct = (Date.now() - animationStarted)/duration;
             const pos = easeOutQuad(pct);
-            const newY = (fromY + 20) * pos;
+            const newY = fromY + 20 * pos;
             circle.setAttribute('cy', newY);
-
             if (pct<1){
                 requestAnimationFrame(step);
             } else {
@@ -247,9 +246,26 @@ async function animateCircleWhenLanded(circle, duration){
             }
         }
         step();
-        circle.setAttribute('opacity', 0);
-
+        //circle.setAttribute('opacity', 0);
     })
+}
+
+async function changeCircleOpacity(circle, duration){
+    const fromOpac = parseFloat(circle.getAttribute('opacity'));
+    return new Promise((resolve) => {
+        const animationStarted = Date.now();
+        function step(){
+            const pct = (Date.now() - animationStarted)/duration;
+            const pos = easeOutQuad(pct);
+            const opac = fromOpac * pos;
+            circle.setAttribute('opacity', opac);
+            if (pct <1){
+                requestAnimationFrame(step);
+            }
+        }
+        step();
+    }
+    )
 }
 
 /**
