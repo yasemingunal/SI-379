@@ -117,14 +117,18 @@ function drawBoard() {
                 peg.setAttribute('fill', chroma('lightgreen').darken(hitCounts[row][col]));//pegScale((hitCounts[row][col])); // Change the color of the peg to indicate that it was hit
             }
         }
-
+        circle.setAttribute('opacity', 0);
 
         const finalColHitCount = hitCounts[NUM_LEVELS-1][col]; // The hit count for the final column
         const barIndex = Math.floor(col/2); // The index of the bar that corresponds to the final column (since there are 2 pegs per bar)
+        
         const newBarHeight = BAR_SCALE_FACTOR * finalColHitCount / NUM_BALLS; // The new height of the bar
-        await changeHeightTo(actualBars[barIndex], newBarHeight, DELAY_WHEN_DROP / parseFloat(speedInput.value)); // Animate the change in height of the bar
-
+        
+        const animPromise1 = changeHeightTo(actualBars[barIndex], newBarHeight, DELAY_WHEN_DROP / parseFloat(speedInput.value)); // Animate the change in height of the bar
+        //ADD ANIMATION OF MOVING DOWN 20px and opacity to 0 await[...] 
+        const animPromise2 = animateCircleWhenLanded(circle, DELAY_WHEN_DROP / parseFloat(speedInput.value));
         circle.remove(); // Remove the circle from the SVG element
+        await Promise.all([animPromise1, animPromise2]);
     }
 
     async function dropBalls() {
@@ -171,22 +175,20 @@ function drawBoard() {
     return cleanup; // Return the cleanup function
 }
 
+function easeOutQuad(t){return t*(2-t);};
+function easeInQuad(t){ return t*t;};
 
 // Animates the height of a rectangle from its current height to a new height
 async function changeHeightTo(rect, toHeight, duration) {
     //await pause(duration);
-    function easeInQuad(t){ return t*t;};
-    return new Promise((resolve, reject) => {
-
+    return new Promise((resolve) => {
         const animationStarted = Date.now();
         const fromHeight = parseFloat(rect.getAttribute('height'));
-
         function step(){
             const pct = (Date.now() - animationStarted) / duration;
             const pos = easeInQuad(pct);
             const value = fromHeight + (toHeight - fromHeight) * pos;
             rect.setAttribute('height', value);
-
             if (pct < 1) {
                 requestAnimationFrame(step);
             } else {
@@ -201,7 +203,6 @@ async function changeHeightTo(rect, toHeight, duration) {
 // Animates the movement of a circle to a new location
 async function moveCircleTo(circle, cx, cy, duration) {
     //await pause(duration);
-    function easeOutQuad(t){return t*(2-t);};
 
     return new Promise(resolve => {
         const fromX = parseFloat(circle.getAttribute('cx'));
@@ -211,6 +212,7 @@ async function moveCircleTo(circle, cx, cy, duration) {
         function step(){
             const pct = (Date.now() - animationStarted) / duration;
             const pos = easeOutQuad(pct);
+            //const newY = fromY - 20;
             const newX = fromX + (cx - fromX) * pos;
             const newY = fromY + (cy - fromY) * pos;
 
@@ -228,7 +230,25 @@ async function moveCircleTo(circle, cx, cy, duration) {
     });
 };
 
+async function animateCircleWhenLanded(circle, duration){
+    return newPromise(resolve=>{
+        const fromY = parseFloat(circle.getAttribute('cy'));
+        const animationStarted = Date.now();
+        function step(){
+            const pct = (Date.now() - animationStarted)/duration;
+            const pos = easeOutQuad(pct);
+            const newY = fromY + 20 * pos;
+            circle.setAttribute('cy', newY);
 
+            if (pct<1){
+                requestAnimationFrame(step);
+            } else {
+                resolve();
+            }
+        }
+        step();
+    })
+}
 
 /**
  * Translates a column and row into a pixel location
