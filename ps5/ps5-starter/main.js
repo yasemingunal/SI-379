@@ -117,7 +117,6 @@ function drawBoard() {
                 peg.setAttribute('fill', chroma('lightgreen').darken(hitCounts[row][col]));//pegScale((hitCounts[row][col])); // Change the color of the peg to indicate that it was hit
             }
         }
-        circle.setAttribute('opacity', 0);
 
         const finalColHitCount = hitCounts[NUM_LEVELS-1][col]; // The hit count for the final column
         const barIndex = Math.floor(col/2); // The index of the bar that corresponds to the final column (since there are 2 pegs per bar)
@@ -227,6 +226,7 @@ async function moveCircleTo(circle, cx, cy, duration) {
             }
         }
         step();
+
     });
 };
 
@@ -237,7 +237,7 @@ async function animateCircleWhenLanded(circle, duration){
         function step(){
             const pct = (Date.now() - animationStarted)/duration;
             const pos = easeOutQuad(pct);
-            const newY = fromY + 20 * pos;
+            const newY = (fromY + 20) * pos;
             circle.setAttribute('cy', newY);
 
             if (pct<1){
@@ -247,6 +247,8 @@ async function animateCircleWhenLanded(circle, duration){
             }
         }
         step();
+        circle.setAttribute('opacity', 0);
+
     })
 }
 
