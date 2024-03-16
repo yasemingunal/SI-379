@@ -88,7 +88,7 @@ function drawBoard() {
         const { x, y } = getGraphicLocation(col, row);
 
         //edited line below:
-        const circle = createCircle(x, y, BALL_RADIUS, chroma(BALL_COLOR).saturate(2*Math.random() - 1), chroma(BALL_COLOR).darken(2*Math.random() - 1), svgElement); // Create a new circle at the top of the board
+        const circle = createCircle(x, y, BALL_RADIUS, chroma(BALL_COLOR).saturate(2*Math.random() - 1).darken(2*Math.random() - 1), "black", svgElement); // Create a new circle at the top of the board
         
         
         circle.setAttribute('opacity', 0.9); // Make the circle slightly transparent (so we can see the pegs it passes through)
