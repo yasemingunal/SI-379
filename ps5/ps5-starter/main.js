@@ -125,9 +125,9 @@ function drawBoard() {
         const newBarHeight = BAR_SCALE_FACTOR * finalColHitCount / NUM_BALLS; // The new height of the bar
         
         const animPromise1 = changeHeightTo(actualBars[barIndex], newBarHeight, DELAY_WHEN_DROP / parseFloat(speedInput.value)); // Animate the change in height of the bar
-        //const animPromise3 = changeCircleOpacity(circle, DELAY_WHEN_DROP / parseFloat(speedInput.value));
         const animPromise2 = animateCircleWhenLanded(circle, DELAY_WHEN_DROP / parseFloat(speedInput.value));
-        await Promise.all([animPromise1,  animPromise2]); //animPromise3
+        const animPromise3 = changeCircleOpacity(circle, DELAY_WHEN_DROP / parseFloat(speedInput.value));
+        await Promise.all([animPromise1,  animPromise2, animPromise3]); //animPromise3
         circle.remove(); // Remove the circle from the SVG element
     }
 
@@ -249,31 +249,29 @@ async function animateCircleWhenLanded(circle, duration){
     })
 }
 
-// async function changeCircleOpacity(circle, duration){
-//     const fromOpac = parseFloat(circle.getAttribute('opacity'));
-//     console.log("look here: " + circle.getAttribute('opacity'));
+async function changeCircleOpacity(circle, duration){
 
-//     return new Promise((resolve) => {
-//         const animationStarted = Date.now();
-//         function updateOpacity(){
-//             const elapsedTime = Date.now() - animationStarted;
-//             const progress = elapsedTime / duration;
-//             const newOpac = easeOutQuad(progress);
-//             // const pct = (Date.now() - animationStarted)/duration;
-//             // const pos = easeOutQuad(pct);
-//             // const opac = fromOpac * pos;
-//             circle.setAttribute('opacity', newOpac); //opac
-//             if (progress <1){
-//                 requestAnimationFrame(updateOpacity);
-//                 //console.log("look here: " + circle.getAttribute('opacity'));
-//             } else{
-//                 resolve();
-//             }
-//         }
-//         updateOpacity();
-//     }
-//     )
-// }
+    return new Promise((resolve) => {
+        const fromOpac = parseFloat(circle.getAttribute('opacity'));
+        const animationStarted = Date.now();
+
+        function updateOpacity(){
+            const pct = (Date.now() - animationStarted) / duration;
+            const pos = easeOutQuad(pct)
+            const value = fromOpac + (0 - fromOpac) * pos;
+            circle.setAttribute('opacity', value); //opac
+            if(pct < 1){
+                requestAnimationFrame(updateOpacity);
+                //console.log("look here: " + circle.getAttribute('opacity'));
+            } else {
+                circle.setAttribute('opacity', 0);
+                resolve();
+            }
+        }
+        updateOpacity();
+    }
+    )
+}
 
 /**
  * Translates a column and row into a pixel location
