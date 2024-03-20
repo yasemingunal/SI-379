@@ -15,6 +15,9 @@ function App() {
   const [guessGreen, setGreenGuess]  = React.useState(getRandomIntegerBetween(MIN, MAX));
   const [guessBlue, setBlueGuess] = React.useState(getRandomIntegerBetween(MIN, MAX));
 
+  const [showingFeedback, setShowingFeedback] = React.useState(false);
+
+
   const redDiff = red - guessRed;
 
   return (
