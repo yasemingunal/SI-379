@@ -33,12 +33,6 @@ function App() {
     setShowingFeedback(false);
   }, []);
 
-  // const onKeyDown = React.useCallback((e) => {
-  //   if (e.key === "Enter") {
-  //     doGuess();
-  //   }
-  // }, [doGuess]);
-
   const onChangeCheatingMode = React.useCallback((e) => {
     setCheatingMode(e.target.checked);
   }, []);
@@ -54,20 +48,17 @@ function App() {
       <div id="color-picker">
         <div className="row">
           <span className="component-color-preview" style={{backgroundColor: `rgb(255, 0, 0, ${guessRed/MAX})`  }}>Red:</span>
-          
           {!showingFeedback && <Slider min={MIN} max={MAX} startingValue={guessRed} onChange={r => setRedGuess(r)}  />}
         </div>
         <div className="row">
 
           <span className="component-color-preview" style={{backgroundColor: `rgb(0, 255, 0, ${guessGreen/MAX})`}}>Green:</span>
-          
           {!showingFeedback && <Slider min={MIN} max={MAX} startingValue={guessGreen} onChange={g => setGreenGuess(g)}  />}
         
         </div>
         <div className="row">
           
           <span className="component-color-preview" style={{backgroundColor: `rgb(0, 0, 255, ${guessBlue/MAX})` }}>Blue:</span>
-          
           {!showingFeedback && <Slider min={MIN} max={MAX} startingValue={guessBlue} onChange={b => setBlueGuess(b)} />}
 
         </div>
