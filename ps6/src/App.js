@@ -26,10 +26,6 @@ function App() {
     setGreen(getRandomIntegerBetween(MIN, MAX));
     setBlue(getRandomIntegerBetween(MIN, MAX));
 
-    setRedGuess(MAX);
-    setGreenGuess(MAX);
-    setBlueGuess(MAX);
-
     setShowingFeedback(false);
   }, []);
 
@@ -43,33 +39,35 @@ function App() {
     <div className="App">
       <label id="cheating-mode">Cheating mode <input type="checkbox" value={cheatingMode} onChange={onChangeCheatingMode} /></label>
       <div id="color-preview" style={{backgroundColor: `rgb(${red}, ${green}, ${blue})`}} />
-      <p>Guess the color of the rectangle</p>
-      
+      {showUserColor && <div id='guess-preview' style={{backgroundColor: `rgb(${guessRed}, ${guessGreen}, ${guessBlue})`}}/>}
+      {showingFeedback && <p>Your guess: rgb({guessRed}, {guessGreen}, {guessBlue}). Actual: <strong>rgb({red}, {green}, {blue}).</strong></p> }
+
+      {!showingFeedback && <p>Guess the color of the rectangle</p>}
+      {showingFeedback && <button onClick={doAdvance}>Next</button>}
       <div id="color-picker">
         <div className="row">
-          <span className="component-color-preview" style={{backgroundColor: `rgb(255, 0, 0, ${guessRed/MAX})`  }}>Red:</span>
+        {!showingFeedback && <span className="component-color-preview" style={{backgroundColor: `rgb(255, 0, 0, ${guessRed/MAX})`  }}>Red:</span>}
           {!showingFeedback && <Slider min={MIN} max={MAX} startingValue={guessRed} onChange={r => setRedGuess(r)}  />}
         </div>
         <div className="row">
 
-          <span className="component-color-preview" style={{backgroundColor: `rgb(0, 255, 0, ${guessGreen/MAX})`}}>Green:</span>
+        {!showingFeedback && <span className="component-color-preview" style={{backgroundColor: `rgb(0, 255, 0, ${guessGreen/MAX})`}}>Green:</span>}
           {!showingFeedback && <Slider min={MIN} max={MAX} startingValue={guessGreen} onChange={g => setGreenGuess(g)}  />}
         
         </div>
         <div className="row">
           
-          <span className="component-color-preview" style={{backgroundColor: `rgb(0, 0, 255, ${guessBlue/MAX})` }}>Blue:</span>
+        {!showingFeedback && <span className="component-color-preview" style={{backgroundColor: `rgb(0, 0, 255, ${guessBlue/MAX})` }}>Blue:</span>}
           {!showingFeedback && <Slider min={MIN} max={MAX} startingValue={guessBlue} onChange={b => setBlueGuess(b)} />}
 
         </div>
+
+        {!showingFeedback && <button onClick={doGuess}>Guess</button> }
+      
       </div>    
 
-      {showingFeedback && <p>Your guess: rgb({guessRed}, {guessGreen}, {guessBlue}). Actual: <strong>rgb({red}, {green}, {blue}).</strong></p> }
 
-      {!showingFeedback && <button onClick={doGuess}>Guess</button> }
-      {showingFeedback && <button onClick={doAdvance}>Next</button>}
 
-      {showUserColor && <div id='guess-preview' style={{backgroundColor: `rgb(${guessRed}, ${guessGreen}, ${guessBlue})`}}/>}
       {showUserColor && <div id='answer-color' style={{backgroundColor: `rgb(${red}, ${green}, ${blue})`}} />}
       </div>
   );
