@@ -6,46 +6,43 @@
 
 
 const quizButton = document.querySelector(".quizButton");
-const divEl = document.querySelector('#quiz')
+const divEl = document.querySelector('#quiz');
 
 document.addEventListener("DOMContentLoaded", () => {
     quizButton.addEventListener("click", () =>{
+
+        let newQ = document.createElement('p');
+        newQ.textContent = "HELLO";
+
+        divEl.appendChild(newQ);
         console.log('quiz button clicked');
-        getCocktailData();
-        //console.log(fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita`).then(response => response.json()))
+        //getCocktailData();
     });
 })
 
-//www.thecocktaildb.com/api/json/v1/1/search.php?s=
-
 // BELOW IS FOR API CALLING
-function getCocktailData(){
-    const margarita = fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita`)
-    .then(response => response.json()).then((data) => {
-        console.log(data.drinks[0].strDrink);
-    });
-    return margarita;
-    
+async function getCocktailData(){
+    const res1 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita`);
+    obj1 = await res1.json();
+    const res2 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=martini`);
+    obj2 = await res2.json();
+    const res3 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=negroni`);
+    obj3 = await res3.json();
+    const res4 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=mojito`);
+    obj4 = await res4.json();
 
-    // const martini = fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=martini`)
-    // .then(response => response.json()).then((data) => {
-    //     console.log(data.drinks[0].strDrink);
-    // });
+    margarita = obj1.drinks[0]
+    martini = obj2.drinks[0]
+    negroni = obj3.drinks[0]
+    mojito = obj4.drinks[0]
 
-    // const negroni = fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=negroni`)
-    // .then(response => response.json()).then((data) => {
-    //     console.log(data.drinks[0].strDrink);
-    // });
+    console.log(margarita.strDrink, martini.strDrink, negroni.strDrink, mojito.strDrink);
 
-    // const mojito = fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=mojito`)
-    // .then(response => response.json()).then((data) => {
-    //     console.log(data.drinks[0].strDrink);
-    // });
 }
 
 
 
-// BELOW IS RELEVANT TO LEARN TO MIX PAGES:
+// BELOW IS FOR "LEARN TO MIX" PAGES:
 
 // const animationDiv = document.querySelector("svg");
 // const fillButton = document.querySelector("#fillGlass");

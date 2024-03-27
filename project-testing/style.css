@@ -1,7 +1,12 @@
+/* GENERAL TEXT STYLING */
 h1{
     font-family: "Baskerville", monospace;
     text-align:center;
+    padding: 20px;
 }
+
+
+/* BUTTON STYLING */
 button{
     background-color: black;
     border: none;
@@ -18,6 +23,8 @@ button:hover{
     padding: 18px;
 }
 
+
+/* OBJECT AND SHAPE STYLING */
 .circle{
     height:50px;
     width:50px;
