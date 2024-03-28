@@ -5,6 +5,7 @@
 const quizButton = document.querySelector(".quizButton");
 const learnButton = document.querySelector(".learnButton");
 const welcomeDiv = document.querySelector("#buttonCont");
+const learningDiv = document.querySelector("#learningContent");
 const learningCards = document.querySelector("#learningCards");
 const divEl = document.querySelector('#quiz');
 
@@ -25,18 +26,31 @@ document.addEventListener("DOMContentLoaded", () => {
     learnButton.addEventListener('click', () => {
         anime({
             targets: '.circle',
-            translateX: 5000,
-            duration: 50000
+            translateX: 7000,
+            duration: 40000
         });
 
         let initialQuestion = document.createElement('p');
         initialQuestion.classList.add('questionDisplay');
         initialQuestion.textContent = "Which drink would you like to learn more about?";
+        let backButton = document.createElement("button");
+        backButton.innerText = "Back";
+
+        const card1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        card1.classList.add('cardStyle')
+//     martiniLine1.style.stroke='black';
+
         setTimeout(() => {
             welcomeDiv.classList.add('disappear');
-            divEl.appendChild(initialQuestion);
+            learningContent.appendChild(initialQuestion);
+            learningDiv.append(backButton)
+            learningDiv.append(card1);
         }, 1500)
         
+        backButton.addEventListener("click", () => {
+            welcomeDiv.classList.remove('disappear');
+            learningDiv.classList.add('disappear');
+        });
 
 
 
