@@ -1,8 +1,22 @@
 /* GENERAL TEXT STYLING */
-h1{
+body{
     font-family: "Baskerville", monospace;
+    background-image: url("assets/asset.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    margin:100px;
+}
+
+h1{
+
     text-align:center;
-    padding: 20px;
+    font-weight:bolder;
+    padding: 10px;
+    margin:20px 10px;
+    font-size:40px;
+    color:black;
+    text-shadow:-3px 3px 1px white;
+    
 }
 
 
@@ -11,7 +25,7 @@ button{
     background-color: black;
     border: none;
     color:white;
-    padding: 15px;
+    padding: 12px;
     text-align: center;
     display: inline-block;
     font-size: 15px;
@@ -25,6 +39,7 @@ button:hover{
 
 .questionDisplay{
     font-size: 30px;
+    font-weight:bolder;
     text-align:center;
 }
 
@@ -42,7 +57,7 @@ button:hover{
     height:20px;
     width:20px;
     border-radius:50%;
-    background-color:red;
+    background-color:pink;
 }
 
 .card{
