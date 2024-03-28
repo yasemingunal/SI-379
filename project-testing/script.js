@@ -1,23 +1,46 @@
 //import chroma from "chroma-js";
-// anime({
-//     targets: '.circle',
-//     translateX: 250
-// });
+
 
 
 const quizButton = document.querySelector(".quizButton");
+const learnButton = document.querySelector(".learnButton");
+const welcomeDiv = document.querySelector("#buttonCont");
+const learningCards = document.querySelector("#learningCards");
 const divEl = document.querySelector('#quiz');
+
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
     quizButton.addEventListener("click", () =>{
-
-        let newQ = document.createElement('p');
-        newQ.textContent = "HELLO";
-
-        divEl.appendChild(newQ);
-        console.log('quiz button clicked');
+        anime({
+            targets: '.circle',
+            translateX: 5000,
+            duration: 50000
+        });
         //getCocktailData();
+
     });
+
+    learnButton.addEventListener('click', () => {
+        anime({
+            targets: '.circle',
+            translateX: 5000,
+            duration: 50000
+        });
+
+        let initialQuestion = document.createElement('p');
+        initialQuestion.classList.add('questionDisplay');
+        initialQuestion.textContent = "Which drink would you like to learn more about?";
+        setTimeout(() => {
+            welcomeDiv.classList.add('disappear');
+            divEl.appendChild(initialQuestion);
+        }, 1500)
+        
+
+
+
+    })
 })
 
 // BELOW IS FOR API CALLING
@@ -35,8 +58,8 @@ async function getCocktailData(){
     martini = obj2.drinks[0]
     negroni = obj3.drinks[0]
     mojito = obj4.drinks[0]
-
-    console.log(margarita.strDrink, martini.strDrink, negroni.strDrink, mojito.strDrink);
+    return [margarita, martini, negroni, mojito]
+    //console.log(margarita, martini.strDrink, negroni.strDrink, mojito.strDrink);
 
 }
 
