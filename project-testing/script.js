@@ -8,11 +8,13 @@ const welcomeDiv = document.querySelector("#buttonCont");
 const learningDiv = document.querySelector("#learningContent");
 const learningCards = document.querySelector("#learningCards");
 const divEl = document.querySelector('#quiz');
+const backButton = document.createElement("button");
+backButton.innerText = "Back";
+const card1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+const circle = document.querySelector(".circle");
 
 
-
-
-document.addEventListener("DOMContentLoaded", () => {
+// document.addEventListener("DOMContentLoaded", () => {
     quizButton.addEventListener("click", () =>{
         anime({
             targets: '.circle',
@@ -29,33 +31,28 @@ document.addEventListener("DOMContentLoaded", () => {
             translateX: 7000,
             duration: 40000
         });
-
+        //learningDiv.classList.remove('disappear');
         let initialQuestion = document.createElement('p');
         initialQuestion.classList.add('questionDisplay');
         initialQuestion.textContent = "Which drink would you like to learn more about?";
-        let backButton = document.createElement("button");
-        backButton.innerText = "Back";
-
-        const card1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        card1.classList.add('cardStyle')
+        card1.classList.add('cardStyle');
 //     martiniLine1.style.stroke='black';
 
         setTimeout(() => {
             welcomeDiv.classList.add('disappear');
-            learningContent.appendChild(initialQuestion);
+            learningDiv.appendChild(initialQuestion);
             learningDiv.append(backButton)
-            learningDiv.append(card1);
+            learningDiv.appendChild(card1);
         }, 1500)
-        
-        backButton.addEventListener("click", () => {
-            welcomeDiv.classList.remove('disappear');
-            learningDiv.classList.add('disappear');
-        });
-
-
-
     })
-})
+    backButton.addEventListener("click", () => {
+        welcomeDiv.classList.remove('disappear');
+        welcomeDiv.classList.add('h1');
+        learningDiv.classList.add('disappear');
+        circle.cx = "0";
+        circle.cy = "100";
+    });
+// })
 
 // BELOW IS FOR API CALLING
 async function getCocktailData(){

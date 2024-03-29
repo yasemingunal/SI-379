@@ -1,18 +1,25 @@
 /* GENERAL TEXT STYLING */
+
+header{
+    background-color:cornflowerblue;
+    padding:20px;
+    width:100% 100%;
+    text-align: center;
+}
+
 body{
     font-family: "Baskerville", monospace;
-    background-image: url("assets/asset.svg");
+    /* background-image: url("assets/asset.svg");
     background-repeat: no-repeat;
-    background-position: center;
-    margin:100px;
+    background-position: center; */
+    padding:20px;
 }
 
 h1{
-
     text-align:center;
     font-weight:bolder;
-    padding: 10px;
-    margin:20px 10px;
+    /* padding: 10px;
+    margin:20px 10px; */
     font-size:40px;
     color:black;
     text-shadow:-3px 3px 1px white;
