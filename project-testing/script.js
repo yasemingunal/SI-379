@@ -5,7 +5,7 @@
 const quizButton = document.querySelector(".quizButton");
 const learnButton = document.querySelector(".learnButton");
 const welcomeDiv = document.querySelector("#buttonCont");
-const learningDiv = document.querySelector("#learningContent");
+const learningSpan = document.querySelector("#learningContent");
 const learningCards = document.querySelector("#learningCards");
 const divEl = document.querySelector('#quiz');
 const backButton = document.createElement("button");
@@ -41,15 +41,22 @@ learnButton.addEventListener('click', () => {
 
     setTimeout(() => {
         welcomeDiv.classList.add('disappear');
-        learningDiv.appendChild(initialQuestion);
+        learningSpan.appendChild(initialQuestion);
+        getSampleCocktails().then(cocktails => { const drinkNames = cocktails.map(cocktail => cocktail.name);
+        console.log(drinkNames[0], drinkNames[1])});
+    
         //learningDiv.append(backButton)
-        var svgEl = document.createElementNS("http://www.w3.org/2000/svg","svg");
-        card1.setAttribute("width","80");
-        card1.setAttribute("height","80");
-        card1.style.fill = "pink";
-        card1.style.stroke = "black";
-        svgEl.appendChild(card1);
-        learningDiv.appendChild(svgEl);
+        for (let i=0; i<2; i++){
+            const drinkCard = document.createElement('div');
+            drinkCard.setAttribute("id", i);
+            drinkCard.setAttribute("class", 'card');// = "card";
+            drinkCard.classList.add('cardStyle');
+            //getSampleCocktails().then(cocktails => { const drinkNames = cocktails.map(cocktail => cocktail.name);
+
+            drinkCard.textContent = getSampleCocktails().then(cocktails => { const drinkNames = cocktails.map(cocktail => cocktail.name);
+                drinkNames[0]});
+            learningSpan.append(drinkCard);
+        }
     }, 1500)
 })
 
@@ -63,24 +70,30 @@ backButton.addEventListener("click", () => {
 // })
 
 // BELOW IS FOR API CALLING
-async function getCocktailData(){
+async function getSampleCocktails(){
     const res1 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita`);
     obj1 = await res1.json();
     const res2 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=martini`);
     obj2 = await res2.json();
-    const res3 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=negroni`);
-    obj3 = await res3.json();
-    const res4 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=mojito`);
-    obj4 = await res4.json();
 
-    margarita = obj1.drinks[0]
-    martini = obj2.drinks[0]
-    negroni = obj3.drinks[0]
-    mojito = obj4.drinks[0]
-    return [margarita, martini, negroni, mojito]
-    //console.log(margarita, martini.strDrink, negroni.strDrink, mojito.strDrink);
-
-}
+    const cocktailsArray = [];
+    const margInfo = obj1.drinks.map(drink => ({name: drink.strDrink, glass: drink.strGlass, instructions: drink.strInstructions, ingredients: [
+    drink.strIngredient1,
+    drink.strIngredient2,
+    drink.strIngredient3,
+    drink.strIngredient4,
+    drink.strIngredient5]}))
+    cocktailsArray.push(margInfo[0]);
+    
+    const martiniInfo = obj2.drinks.map(drink => ({name: drink.strDrink, glass: drink.strGlass, instructions: drink.strInstructions, ingredients: [
+        drink.strIngredient1,
+        drink.strIngredient2,
+        drink.strIngredient3,
+        drink.strIngredient4,
+        drink.strIngredient5]}))
+    cocktailsArray.push(martiniInfo[0]);
+    return cocktailsArray;
+};
 
 
 
