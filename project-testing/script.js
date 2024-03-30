@@ -11,47 +11,55 @@ const divEl = document.querySelector('#quiz');
 const backButton = document.createElement("button");
 backButton.innerText = "Back";
 const card1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+//card1.classList.add(".cardStyle");
 const circle = document.querySelector(".circle");
 
 
 // document.addEventListener("DOMContentLoaded", () => {
-    quizButton.addEventListener("click", () =>{
-        anime({
-            targets: '.circle',
-            translateX: 5000,
-            duration: 50000
-        });
-        //getCocktailData();
-
+quizButton.addEventListener("click", () =>{
+    anime({
+        targets: '.circle',
+        translateX: 5000,
+        duration: 50000
     });
+    //getCocktailData();
 
-    learnButton.addEventListener('click', () => {
-        anime({
-            targets: '.circle',
-            translateX: 7000,
-            duration: 40000
-        });
-        //learningDiv.classList.remove('disappear');
-        let initialQuestion = document.createElement('p');
-        initialQuestion.classList.add('questionDisplay');
-        initialQuestion.textContent = "Which drink would you like to learn more about?";
-        card1.classList.add('cardStyle');
+});
+
+learnButton.addEventListener('click', () => {
+    anime({
+        targets: '.circle',
+        translateX: 7000,
+        duration: 40000
+    });
+    //learningDiv.classList.remove('disappear');
+    let initialQuestion = document.createElement('p');
+    initialQuestion.classList.add('questionDisplay');
+    initialQuestion.textContent = "Which drink would you like to learn more about?";
+    //card1.classList.add('cardStyle');
 //     martiniLine1.style.stroke='black';
 
-        setTimeout(() => {
-            welcomeDiv.classList.add('disappear');
-            learningDiv.appendChild(initialQuestion);
-            learningDiv.append(backButton)
-            learningDiv.appendChild(card1);
-        }, 1500)
-    })
-    backButton.addEventListener("click", () => {
-        welcomeDiv.classList.remove('disappear');
-        welcomeDiv.classList.add('h1');
-        learningDiv.classList.add('disappear');
-        circle.cx = "0";
-        circle.cy = "100";
-    });
+    setTimeout(() => {
+        welcomeDiv.classList.add('disappear');
+        learningDiv.appendChild(initialQuestion);
+        //learningDiv.append(backButton)
+        var svgEl = document.createElementNS("http://www.w3.org/2000/svg","svg");
+        card1.setAttribute("width","80");
+        card1.setAttribute("height","80");
+        card1.style.fill = "pink";
+        card1.style.stroke = "black";
+        svgEl.appendChild(card1);
+        learningDiv.appendChild(svgEl);
+    }, 1500)
+})
+
+backButton.addEventListener("click", () => {
+    welcomeDiv.classList.remove('disappear');
+    welcomeDiv.classList.add('h1');
+    learningDiv.classList.add('disappear');
+    circle.cx = "0";
+    circle.cy = "100";
+});
 // })
 
 // BELOW IS FOR API CALLING
