@@ -1,40 +1,46 @@
-//document elements:
-const searchInput = document.querySelector("#searchBar");
-const searchInpVal = searchInput.value;
-const rotatingBottle = document.querySelector(".rotatingDrink");
-const searchButton = document.querySelector("#searchButton");
+// async function getSampleCocktails(){
+//     const res1 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita`);
+//     obj1 = await res1.json();
+//     const res2 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=martini`);
+//     obj2 = await res2.json();
 
-
-//rotate the bottle animation: 
-function rotateBottle(){
-    setInterval(() => { 
-        rotatingBottle.style.WebkitTransitionDuration="4s";
-        rotatingBottle.style.WebkitTransform='rotate(30deg)';
-    }, 500)
-};
-
-rotateBottle();
-
-
-// function getCocktailData(params){
-//     const finalVal = fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${params}`).then(response => response.json());
-//     console.log(finalVal);
-//     searchInpVal.value = ""; // clear search input 
-//     return finalVal;
+//     const cocktailsArray = [];
+//     const margInfo = obj1.drinks.map(drink => ({name: drink.strDrink, glass: drink.strGlass, instructions: drink.strInstructions, ingredients: [
+//     drink.strIngredient1,
+//     drink.strIngredient2,
+//     drink.strIngredient3,
+//     drink.strIngredient4,
+//     drink.strIngredient5]}))
+//     cocktailsArray.push(margInfo[0]);
+    
+//     const martiniInfo = obj2.drinks.map(drink => ({name: drink.strDrink, glass: drink.strGlass, instructions: drink.strInstructions, ingredients: [
+//         drink.strIngredient1,
+//         drink.strIngredient2,
+//         drink.strIngredient3,
+//         drink.strIngredient4,
+//         drink.strIngredient5]}))
+//     cocktailsArray.push(martiniInfo[0]);
+//     return cocktailsArray;
 // };
 
-// searchButton.addEventListener("click", () => {
-//     console.log(searchInpVal)
-//     console.log(getCocktailData(searchInpVal));
-// });
+// const data = getSampleCocktails();
+// console.log(data);
 
-// searchInput.addEventListener("keydown", (ev) => {
-//     if (ev.key === 'Enter'){
-//         console.log(getCocktailData(searchInpVal));
-//     };
-//     searchInpVal.value = ""; // clear search input 
-// })
-
-
-
-
+function fetchDrinkAndAppend() {
+    const divElement = document.getElementById('drinkList');
+    const apiUrl = 'https://www.thecocktaildb.com/api/json/v1/1/random.php';
+    
+    setInterval(() => {
+        fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.drinks && data.drinks.length > 0) {
+                const drinkName = data.drinks[0].strDrink;
+                const drinkElement = document.createElement('div');
+                drinkElement.textContent = drinkName;
+                divElement.appendChild(drinkElement);
+            }
+        });
+    }, 5000);
+}
+//fetchDrinkAndAppend();

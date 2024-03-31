@@ -58,12 +58,6 @@ button:hover{
 }
 
 /* OBJECT AND SHAPE STYLING */
-.circle{
-    height:20px;
-    width:20px;
-    border-radius:50%;
-    background-color:pink;
-}
 
 .cardStyle{
     height:220px;

@@ -1,7 +1,5 @@
 //import chroma from "chroma-js";
 
-
-
 const quizButton = document.querySelector(".quizButton");
 const learnButton = document.querySelector(".learnButton");
 const welcomeDiv = document.querySelector("#buttonCont");
@@ -11,90 +9,48 @@ const divEl = document.querySelector('#quiz');
 const backButton = document.createElement("button");
 backButton.innerText = "Back";
 const card1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-//card1.classList.add(".cardStyle");
-const circle = document.querySelector(".circle");
 
+const drinkList = document.querySelector("#drinkList");
 
-// document.addEventListener("DOMContentLoaded", () => {
-quizButton.addEventListener("click", () =>{
-    anime({
-        targets: '.circle',
-        translateX: 5000,
-        duration: 50000
-    });
-    //getCocktailData();
+function fetchAppendDrinks() {
+    const apiUrl = 'https://www.thecocktaildb.com/api/json/v1/1/random.php';
+    const drinkNames = []
+    for (let i=0; i<4; i++){
+        setTimeout(() => {
+            fetch(apiUrl).then(response => response.json()).then(data => {
+                if (data.drinks && data.drinks.length > 0) {
+                    const drinkName = data.drinks[0].strDrink;
+                    drinkNames.push(drinkName);
+                    const drinkElement = document.createElement('div');
+                    drinkElement.classList.add('cardStyle');
+                    drinkElement.textContent = drinkName;
+                    drinkList.appendChild(drinkElement);
+                }
+            });
+        }, 2000 * i);
+    }
+    console.log(drinkNames)
+    return drinkNames;
+};
 
-});
-
+const question = document.querySelector("#initialQuestion");
+const searchBar = document.querySelector("#searchBar");
+searchBar.classList.add('disappear');
 learnButton.addEventListener('click', () => {
-    anime({
-        targets: '.circle',
-        translateX: 7000,
-        duration: 40000
-    });
-    //learningDiv.classList.remove('disappear');
-    let initialQuestion = document.createElement('p');
-    initialQuestion.classList.add('questionDisplay');
-    initialQuestion.textContent = "Which drink would you like to learn more about?";
-    //card1.classList.add('cardStyle');
-//     martiniLine1.style.stroke='black';
-
-    setTimeout(() => {
-        welcomeDiv.classList.add('disappear');
-        learningSpan.appendChild(initialQuestion);
-        getSampleCocktails().then(cocktails => { const drinkNames = cocktails.map(cocktail => cocktail.name);
-        console.log(drinkNames[0], drinkNames[1])});
-    
-        //learningDiv.append(backButton)
-        for (let i=0; i<2; i++){
-            const drinkCard = document.createElement('div');
-            drinkCard.setAttribute("id", i);
-            drinkCard.setAttribute("class", 'card');// = "card";
-            drinkCard.classList.add('cardStyle');
-            //getSampleCocktails().then(cocktails => { const drinkNames = cocktails.map(cocktail => cocktail.name);
-
-            drinkCard.textContent = getSampleCocktails().then(cocktails => { const drinkNames = cocktails.map(cocktail => cocktail.name);
-                drinkNames[0]});
-            learningSpan.append(drinkCard);
-        }
-    }, 1500)
+    question.textContent = "Which drink would you like to learn more about?"; 
+    searchBar.style.width = "300px";
+    searchBar.classList.remove('disappear');
+    searchBar.classList.add('appear');
+    learningSpan.classList.add('questionDisplay');
+    welcomeDiv.classList.add('disappear');
+    fetchAppendDrinks();
 })
 
 backButton.addEventListener("click", () => {
     welcomeDiv.classList.remove('disappear');
     welcomeDiv.classList.add('h1');
     learningDiv.classList.add('disappear');
-    circle.cx = "0";
-    circle.cy = "100";
 });
-// })
-
-// BELOW IS FOR API CALLING
-async function getSampleCocktails(){
-    const res1 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita`);
-    obj1 = await res1.json();
-    const res2 = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=martini`);
-    obj2 = await res2.json();
-
-    const cocktailsArray = [];
-    const margInfo = obj1.drinks.map(drink => ({name: drink.strDrink, glass: drink.strGlass, instructions: drink.strInstructions, ingredients: [
-    drink.strIngredient1,
-    drink.strIngredient2,
-    drink.strIngredient3,
-    drink.strIngredient4,
-    drink.strIngredient5]}))
-    cocktailsArray.push(margInfo[0]);
-    
-    const martiniInfo = obj2.drinks.map(drink => ({name: drink.strDrink, glass: drink.strGlass, instructions: drink.strInstructions, ingredients: [
-        drink.strIngredient1,
-        drink.strIngredient2,
-        drink.strIngredient3,
-        drink.strIngredient4,
-        drink.strIngredient5]}))
-    cocktailsArray.push(martiniInfo[0]);
-    return cocktailsArray;
-};
-
 
 
 // BELOW IS FOR "LEARN TO MIX" PAGES:
