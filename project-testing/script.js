@@ -24,6 +24,8 @@ function fetchAppendDrinks() {
                     const drinkElement = document.createElement('div');
                     drinkElement.classList.add('cardStyle');
                     drinkElement.textContent = drinkName;
+                    drinkElement.style.transition = 'background-color 1s ease';
+                    drinkElement.setAttribute('id', 'randDrink');
                     drinkList.appendChild(drinkElement);
                 }
             });
