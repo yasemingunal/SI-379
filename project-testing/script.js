@@ -37,33 +37,48 @@ function fetchAppendDrinks() {
 };
 
 searchBar.addEventListener("keydown", (ev) => {
-    drinkList.classList.add('disappear'); 
-
     if (ev.key === 'Enter'){
+        drinkList.classList.add('disappear'); 
         const searchedDrink = searchBar.value;
         let ingredientsList = [];
         searchBar.value = "";
         const searchAPIUrl = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchedDrink}`;
+        const drinkElement = document.createElement('div');
         fetch(searchAPIUrl).then(response => response.json()).then(data =>{
             if (data.drinks){
                 console.log(data.drinks);
-                const drinkElement = document.createElement('div');
                 drinkElement.classList.add('cardStyle');
-                drinkElement.textContent = data.drinks[0].strDrink;
-                for (let idx=1; idx < 5; idx++ ){
-                    let currIng = `strIngredient${idx}`;
-                    let ingStr = data.drinks.currIng;
-                    ingredientsList.push(ingStr);
+                let drinkTitle = document.createElement("p");
+                drinkTitle.classList.add('drinkName')
+                drinkTitle.innerText = data.drinks[0].strDrink;
+                drinkElement.append(drinkTitle);
+                //drinkElement.innerText = ;
+                ingredientsList.push(data.drinks[0].strIngredient1, data.drinks[0].strIngredient2, data.drinks[0].strIngredient3,
+                    data.drinks[0].strIngredient4);
                 }
-                drinkElement.append(ingredientsList);
+                for (let item in ingredientsList){
+                    let newLi = document.createElement('li');
+                    if (ingredientsList[item]){
+                        newLi.innerText = ingredientsList[item];
+                        drinkElement.append(newLi)
+                    }
+                    
+                };
+                let learnMoreButton = document.createElement('button');
+                learnMoreButton.innerText = "Learn More";
+                learnMoreButton.classList.add('button');
+                learnMoreButton.setAttribute('id', 'learnMoreBut');
+                drinkElement.append(learnMoreButton);
+                console.log("LOOK HERE: ", ingredientsList)
+                //drinkElement.append(ingredientsList);
                 learningSpan.append(drinkElement);
 
-            }
-        })
+            })
+        }
         console.log(searchedDrink);
 
-    }
-});
+    });
+// });
 
 fetchAppendDrinks();
 

@@ -1,7 +1,9 @@
 function App() {
+  const [title = <div></div>]
+
+
   return (
     <div>
-      This is my first React application!
     </div>
   );
 }
