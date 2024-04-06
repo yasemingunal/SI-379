@@ -9,21 +9,20 @@ header{
 
 body{
     font-family: "Baskerville", monospace;
-    /* background-image: url("assets/asset.svg");
-    background-repeat: no-repeat;
-    background-position: center; */
+    background-color:#55BCC9;
     padding:20px;
 }
 
-h1{
+h1, h2{
     text-align:center;
     font-weight:bolder;
-    /* padding: 10px;
-    margin:20px 10px; */
     font-size:40px;
     color:black;
-    text-shadow:-3px 3px 1px white;
-    
+}
+
+.drinkThumb{
+    width:100px;
+    height:100px;
 }
 
 .drinkName{
@@ -35,16 +34,20 @@ h1{
 /* BUTTON STYLING */
 button{
     background-color: black;
-    border: none;
+    border: 2px;
+    border-color: #FC4445;
     color:white;
-    padding: 12px;
+    padding: 10px;
     text-align: center;
     display: inline-block;
     font-size: 15px;
+    margin: 5px;
 }
+
 #buttonCont{
     text-align:center;
 }
+
 button:hover{
     padding: 18px;
 }
@@ -67,15 +70,21 @@ button:hover{
 /* OBJECT AND SHAPE STYLING */
 
 .cardStyle{
-    height:220px;
+    height:250px;
     width:200px;
     padding:10px;
     margin:10px;;
     align-self:center;
     text-align:center;
-    background-color:pink;
+    background-color: #F64C52;
     display:inline-block;
+    box-shadow: 10px 10px white;
 }
+
+/* .cardStyle:hover{
+    height: 230px;
+    width: 210px;
+} */
 
 #learningContent{
     vertical-align: middle;
