@@ -1,16 +1,17 @@
 //import chroma from "chroma-js";
 
 const quizButton = document.querySelector(".quizButton");
-const learnButton = document.querySelector(".learnButton");
+//const learnButton = document.querySelector(".learnButton");
 const welcomeDiv = document.querySelector("#buttonCont");
 const learningSpan = document.querySelector("#learningContent");
 const learningCards = document.querySelector("#learningCards");
 const divEl = document.querySelector('#quiz');
-const backButton = document.createElement("button");
-backButton.innerText = "Back";
 const card1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-
 const drinkList = document.querySelector("#drinkList");
+const question = document.querySelector("#initialQuestion");
+question.textContent = "Which drink would you like to learn more about?";
+const searchBar = document.querySelector("#searchBar");
+searchBar.style.width = "300px";
 
 function fetchAppendDrinks() {
     const apiUrl = 'https://www.thecocktaildb.com/api/json/v1/1/random.php';
@@ -35,25 +36,50 @@ function fetchAppendDrinks() {
     return drinkNames;
 };
 
-const question = document.querySelector("#initialQuestion");
-const searchBar = document.querySelector("#searchBar");
-searchBar.classList.add('disappear');
-learnButton.addEventListener('click', () => {
-    question.textContent = "Which drink would you like to learn more about?"; 
-    searchBar.style.width = "300px";
-    searchBar.classList.remove('disappear');
-    searchBar.classList.add('appear');
-    learningSpan.classList.add('questionDisplay');
-    welcomeDiv.classList.add('disappear');
-    fetchAppendDrinks();
-})
+searchBar.addEventListener("keydown", (ev) => {
+    drinkList.classList.add('disappear'); 
 
-backButton.addEventListener("click", () => {
-    welcomeDiv.classList.remove('disappear');
-    welcomeDiv.classList.add('h1');
-    learningDiv.classList.add('disappear');
+    if (ev.key === 'Enter'){
+        const searchedDrink = searchBar.value;
+        let ingredientsList = [];
+        searchBar.value = "";
+        const searchAPIUrl = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchedDrink}`;
+        fetch(searchAPIUrl).then(response => response.json()).then(data =>{
+            if (data.drinks){
+                console.log(data.drinks);
+                const drinkElement = document.createElement('div');
+                drinkElement.classList.add('cardStyle');
+                drinkElement.textContent = data.drinks[0].strDrink;
+                for (let idx=1; idx < 5; idx++ ){
+                    let currIng = `strIngredient${idx}`;
+                    let ingStr = data.drinks.currIng;
+                    ingredientsList.push(ingStr);
+                }
+                drinkElement.append(ingredientsList);
+                learningSpan.append(drinkElement);
+
+            }
+        })
+        console.log(searchedDrink);
+
+    }
 });
 
+fetchAppendDrinks();
+
+
+
+
+
+// learnButton.addEventListener('click', () => {
+     
+
+//     searchBar.classList.remove('disappear');
+//     searchBar.classList.add('appear');
+//     learningSpan.classList.add('questionDisplay');
+//     welcomeDiv.classList.add('disappear');
+
+// })
 
 // BELOW IS FOR "LEARN TO MIX" PAGES:
 
