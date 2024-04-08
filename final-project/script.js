@@ -27,7 +27,7 @@ for (let key of keyDivs){
     key.addEventListener("click", () => {
         key.classList.add('clicked');
         setTimeout(() => {
-            key.classList.remove('clicked')}, 800);
+            key.classList.remove('clicked')}, 1000);
 
     console.log("clicked ", key.id)});
 }

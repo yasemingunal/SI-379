@@ -2,7 +2,10 @@
 import React, {useRef} from 'react';
 import './App.css';
 
-let keys = ['C', 'C#', 'D', 'D#', 'E', "X", 'F','F#', 'G', 'G#', 'A', 'A#', 'B', 'X'];
+//let keys = ['C', 'C#', 'D', 'D#', 'E', "X", 'F','F#', 'G', 'G#', 'A', 'A#', 'B', 'X'];
+let whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+let blackKeys = ['C#', 'D#', 'F#', 'G#', 'A#'];
+
 
 function App() {
   const [keyClickColor, setKeyClickColor] = React.useState(0);

@@ -5,8 +5,18 @@
     height: 200px;
 }
 
-.key{
-    border:2px solid black;
+.buttons{
+    display: flex;
+    justify-content: center;
+    margin:30px;
+}
+
+button{
+    color:white;
+    background-color:black;
+    margin: 5px;
+    padding:5px;
+    display:inline-block;
 }
 
 .key:nth-child(odd) {
