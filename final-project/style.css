@@ -1,13 +1,49 @@
-img{
-    max-width:100px;
-    max-height:100px;
-    padding: 15px 0px;
+.piano {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    height: 200px;
 }
 
-#searchButton{
-    color:white;
-    font-weight:bold;
-    border-radius:9px;
-    padding:5px 5px;
-    background-color: brown;
+.key{
+    border:2px solid black;
 }
+
+.key:nth-child(odd) {
+    width: 50px;
+    height: 150px;
+    border: 1px solid black;
+    display: flex;
+}  
+.key:nth-child(even){
+    width:30px;
+    height:100px;
+    background-color:black;
+    display:flex;
+    margin:-5px -5px;
+}
+
+.key:nth-child(6), .key:nth-child(14){
+    visibility:hidden;
+}
+
+.clicked{
+    background-color:lightblue;
+}
+
+/* 
+.whitekey{
+    width: 50px;
+    height: 150px;
+    border: 2px solid black;
+    display: flex;
+    background-color:white;
+}
+
+.blackkey{
+    width:25px;
+    height:100px;
+    background-color:black;
+    display:flex;
+    margin:-5px -5px;
+} */

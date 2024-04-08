@@ -1,15 +1,30 @@
 
-
+import React, {useRef} from 'react';
 import './App.css';
 
-let keys = ['C', 'C#', 'D', 'D#', 'E', 'F','F#', 'G', 'G#', 'A', 'A#', 'B', 'C'];
-// let keys2 = ['C#', 'D#', 'F#', 'G#', 'A#']
+let keys = ['C', 'C#', 'D', 'D#', 'E', "X", 'F','F#', 'G', 'G#', 'A', 'A#', 'B', 'X'];
 
 function App() {
+  const [keyClickColor, setKeyClickColor] = React.useState(0);
+
+  const keyRef = React.useRef();
+  
+  const keyClicked = () => { 
+    setKeyClickColor("lightgray");
+    setTimeout(() => { 
+      setKeyClickColor(0);
+    }, 1000);
+    console.log("clicked");
+  }
+
+
   return (
+
     <div className="piano">
-      {keys.map(key => (<div className='key'></div>))} 
-      {/* map works similar to for loops in plain JS */}
+      {keys.map((currKey) => (<div key = {currKey.id} className='key' onClick={keyClicked} style={{backgroundColor:keyClickColor}}></div>))}
+      {/* {keys.map((key, idx) => (<div key={idx} className='key' onClick={() =>keyClicked(key)} style={{ backgroundColor: keyClickColor[key] }}></div>))}  */}
+      {/* {keys.map(key => (<div className='key' onClick={keyClicked} style={{ backgroundColor: keyClickColor }}></div>))}  */}
+{/* map works similar to for loops in plain JS */}
         </div>
   );
 }
