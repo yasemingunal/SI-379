@@ -22,7 +22,7 @@ button{
 .key:nth-child(odd) {
     width: 50px;
     height: 150px;
-    border: 1px solid black;
+    border: 1.5px solid black;
     display: flex;
 }  
 .key:nth-child(even){
@@ -38,7 +38,15 @@ button{
 }
 
 .clicked{
-    background-color:lightblue;
+    border-style: dashed;
+    border-color:red;
+}
+.disappear{
+    visibility: hidden;
+}
+
+.appear{
+    visibility:visible;
 }
 
 /* 
