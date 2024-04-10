@@ -29,15 +29,9 @@ function App() {
     setTasks(tasks.filter((task, index) => index !== idx));
   }
 
-  function onKeyDown(ev) {
-    if (ev.key === 'Enter'){
-      addNewTask();
-    }
-  }
-
   function startTimer(idx){
     clearInterval(timerId);
-    setWorkTimer(parseInt(workTimerRef.current.value) * 60);
+    setWorkTimer(parseInt(workTimerRef.current.value) *10);
     const id = setInterval(() => {
       setWorkTimer((previousTimeLeft) => {
         if (previousTimeLeft <= 0){
@@ -75,10 +69,12 @@ function App() {
   return (
     <div class="taskList">
       <h1>Set up your to do list and pomodoro timer below!</h1>
+     
 
       <ul>{tasks.map((newTask, idx) => 
               (<li key={idx}>
-                <input type='text' value={newTask} onChange={(e) => {
+                <input type='text' value={newTask}  
+                onChange={(e) => {
                   const updatedTaskList = [...tasks];
                   updatedTaskList[idx] = e.target.value
                   setTasks(updatedTaskList);
@@ -89,8 +85,7 @@ function App() {
                 </li>))}
         </ul>
 
-
-    <input type="text" ref={taskInpRef} onkeyDown={onKeyDown}></input>
+        <input type="text" ref={taskInpRef} onKeyDown={(e) => e.key==='Enter' && addNewTask(e.target.value)} ></input>
 
     <button class="addTask" onClick={addNewTask}>Add Task</button>
 
