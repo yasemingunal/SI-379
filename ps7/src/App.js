@@ -1,13 +1,11 @@
 import React, {useState, useRef} from 'react';
 
 function App() {
-  //set up constants:
   const [tasks, setTasks] = useState([])
   const [focus, setFocus] = useState(false);
   const [onBreak, setOnBreak] = useState(false);
   const [timerRunning, setTimerRunning] = useState(false);
   const [breakTimerRunning, setBreakTimerRunning] = useState(false);
-  const [numTimesStarted, setNumTimesStarted] = useState(0);
 
   const [workTimer, setWorkTimer] = useState(25);
   const [breakTimer, setBreakTimer] = useState(5);
@@ -17,7 +15,6 @@ function App() {
   const workTimerRef = useRef();
   const breakTimeRef = useRef();
 
-  //set up functions:
   function storeState(newTasks){
     localStorage.setItem("todos", JSON.stringify(newTasks));
   }
@@ -38,8 +35,13 @@ function App() {
   }
 
   function startTimer(idx){
+    setTimerRunning(true);
+    setBreakTimerRunning(false);
     clearInterval(timerId);
-    setWorkTimer(parseInt(workTimerRef.current.value));
+    const inputTime = parseInt(workTimerRef.current.value);
+    const minutes = Math.floor(inputTime / 60);
+    const seconds = inputTime % 60;
+    setWorkTimer(`${minutes} : ${seconds}`);
 
     const id = setInterval(() => {
       setWorkTimer((previousTimeLeft) => {
@@ -49,17 +51,20 @@ function App() {
           setTimerRunning(false);
           return 0;
         } else {
-          return previousTimeLeft - 1;
+          if (seconds === 0 && minutes > 0) {
+            return (minutes - 1) * 60 + 59;
+          } else {
+            return previousTimeLeft - 1;
+          }
         }
       });
     }, 1000);
-    setTimerRunning(true);
     setTimerId(id);
     setFocus(idx);
-    setTasks(tasks.map((task, index) => index === idx ? {...task, number: task.number + 1} : task));
   }
 
   function startBreak(idx) {
+    setTimerRunning(false);
     clearInterval(timerId);
     setBreakTimerRunning(true);
     setBreakTimer(parseInt(breakTimeRef.current.value));
@@ -68,6 +73,7 @@ function App() {
         if (prevTimeleft <= 0) {
           setBreakTimerRunning(false);
           clearInterval(id);
+          setTasks(tasks.map((task, index) => index === idx ? {...task, number: task.number + 1} : task)); //learned this concept from Stack Overflow & ChatGPT 
           return 0;
         } else {
           return prevTimeleft - 1;
@@ -105,9 +111,9 @@ function App() {
                     <button onClick={() => handleRemove(idx)}>Remove</button>
                     {(!timerRunning && !breakTimerRunning) && <button onClick={() => startTimer(idx)}>Start Task</button>}
                     {(timerRunning || breakTimerRunning) && (<button onClick={resetTimer}>Cancel</button>)}
-                    {focus === idx && (<div> <div>Work for: {workTimer} seconds</div></div>)}
-                    {onBreak === idx && (<div><div>Break for: {breakTimer} seconds</div></div>)}
-                  <div>Started: {tasks.number} times</div>
+                    {(focus === idx) && (<div> <div>Work for: {workTimer}</div></div>)}
+                    {(onBreak === idx) && (<div><div>Break for: {breakTimer}</div></div>)}
+                  <div>Completed: {newTask.number} times</div>
                 </li>))}
         </ul>
 
