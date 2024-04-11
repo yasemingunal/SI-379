@@ -21,7 +21,11 @@ function App() {
   }
 
   function addNewTask() {
-    const newTask = taskInpRef.current.value;
+    const newTask = {
+      description: taskInpRef.current.value,
+      number:0
+    };
+
     setTasks(tasks.concat(newTask));
     taskInpRef.current.value = "";
     storeState(tasks);
@@ -49,6 +53,10 @@ function App() {
     setTimerRunning(true);
     setTimerId(id);
     setFocus(idx);
+    
+
+    //setTasks(tasks.map((task, index) => index === idx ? {...task, started: task.started + 1} : task));
+
   }
 
   function startBreak() {
@@ -68,6 +76,7 @@ function App() {
   }
   
   function resetTimer() { 
+    setTimerRunning(false);
     clearInterval(timerId);
   }
 
@@ -78,7 +87,7 @@ function App() {
       <ul>{tasks.map((newTask, idx) => 
               (<li key={idx}>
                 <input type='text' 
-                value={newTask}  
+                value={newTask.description}  
                 onChange={(e) => {
                   const updatedTaskList = [...tasks];
                   updatedTaskList[idx] = e.target.value
@@ -89,18 +98,12 @@ function App() {
                     {focus === idx && (<div>
                 <div>Work for: {workTimer} seconds</div>
                 
-                {timerRunning ? (<button onClick={resetTimer}>Cancel</button>) : (<button onClick={() => startTimer(idx)}>Start Task</button>)}
+                {timerRunning && (<button onClick={resetTimer}>Cancel</button>)}
               
               </div>)}
               {!timerRunning && <button onClick={() => startTimer(idx)}>Start Task</button>}
               <div>Break for: {breakTimer} seconds</div>
-                    
-
-{/*                     
-                    <div> Work for: {focus===idx ? workTimer:25} seconds  </div>
-
-                    <div> Break for: {breakTimer} seconds</div>
-                    <button onClick={() => startTimer(idx)}>Start Task</button> */}
+              <div>Started: {tasks.started} times</div>
                 </li>))}
         </ul>
 
