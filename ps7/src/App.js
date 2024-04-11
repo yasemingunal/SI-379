@@ -6,6 +6,7 @@ function App() {
   const [focus, setFocus] = useState(false);
   const [onBreak, setOnBreak] = useState(false);
   const [timerRunning, setTimerRunning] = useState(false);
+  const [breakTimerRunning, setBreakTimerRunning] = useState(false);
   const [numTimesStarted, setNumTimesStarted] = useState(0);
 
   const [workTimer, setWorkTimer] = useState(25);
@@ -24,7 +25,7 @@ function App() {
   function addNewTask() {
     const newTask = {
       description: taskInpRef.current.value,
-      number:0
+      number:0,
     };
 
     setTasks(tasks.concat(newTask));
@@ -38,13 +39,14 @@ function App() {
 
   function startTimer(idx){
     clearInterval(timerId);
-    setWorkTimer(parseInt(workTimerRef.current.value) *10);
+    setWorkTimer(parseInt(workTimerRef.current.value));
 
     const id = setInterval(() => {
       setWorkTimer((previousTimeLeft) => {
         if (previousTimeLeft <= 0){
           clearInterval(id);
-          startBreak();
+          startBreak(idx);
+          setTimerRunning(false);
           return 0;
         } else {
           return previousTimeLeft - 1;
@@ -54,18 +56,17 @@ function App() {
     setTimerRunning(true);
     setTimerId(id);
     setFocus(idx);
-    
-
     setTasks(tasks.map((task, index) => index === idx ? {...task, number: task.number + 1} : task));
-
   }
 
-  function startBreak() {
+  function startBreak(idx) {
     clearInterval(timerId);
-    setBreakTimer(parseInt(breakTimeRef.current.value) * 10);
+    setBreakTimerRunning(true);
+    setBreakTimer(parseInt(breakTimeRef.current.value));
     const id = setInterval(() => {
       setBreakTimer(prevTimeleft => {
         if (prevTimeleft <= 0) {
+          setBreakTimerRunning(false);
           clearInterval(id);
           return 0;
         } else {
@@ -74,21 +75,26 @@ function App() {
       });
     }, 1000);
     setTimerId(id);
+    setOnBreak(idx);
   }
   
   function resetTimer() { 
     setTimerRunning(false);
+    setBreakTimerRunning(false);
     clearInterval(timerId);
+
   }
 
   return (
     <div class="taskList">
-      <h1>Set up your to do list and timer below!</h1>
+      <h1>What do you want to do?</h1>
      
       <ul>{tasks.map((newTask, idx) => 
               (<li key={idx}>
                 <input type='text' 
-                value={newTask.description}  
+                value={newTask.description} 
+                number={newTask.number}
+                style = {{color:'darkblue'}} 
                 onChange={(e) => {
                   const updatedTaskList = [...tasks];
                   updatedTaskList[idx] = e.target.value
@@ -97,21 +103,15 @@ function App() {
                 }}/>
                   
                     <button onClick={() => handleRemove(idx)}>Remove</button>
-                    {!timerRunning && <button onClick={() => startTimer(idx)}>Start Task</button>}
-                    {timerRunning && (<button onClick={resetTimer}>Cancel</button>)}
-                    {focus === idx && (<div>
-                <div>Work for: {workTimer} seconds</div>
-                
-                
-              
-              </div>)}
-              
-              <div>Break for: {breakTimer} seconds</div>
-              <div>Started: {tasks.number} times</div>
+                    {(!timerRunning && !breakTimerRunning) && <button onClick={() => startTimer(idx)}>Start Task</button>}
+                    {(timerRunning || breakTimerRunning) && (<button onClick={resetTimer}>Cancel</button>)}
+                    {focus === idx && (<div> <div>Work for: {workTimer} seconds</div></div>)}
+                    {onBreak === idx && (<div><div>Break for: {breakTimer} seconds</div></div>)}
+                  <div>Started: {tasks.number} times</div>
                 </li>))}
         </ul>
 
-        <input type="text" ref={taskInpRef} onKeyDown={(e) => e.key==='Enter' && addNewTask(e.target.value)} ></input>
+        <input type="text" defaultValue="Task Description" ref={taskInpRef} onKeyDown={(e) => e.key==='Enter' && addNewTask(e.target.value)} ></input>
 
     <button class="addTask" onClick={addNewTask}>Add Task</button>
 

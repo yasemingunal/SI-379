@@ -1,12 +1,22 @@
+body{
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
 button{
     border: blue solid;
+    font-size:12;
     background-color:lightblue;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin:10px;
     padding:7px;
 }
 
+button:hover{
+    padding:10px;
+}
+
 input{
-    border:blue solid;
+    border:black solid;
     background-color:beige;
+    font-size:medium;
+    color:gray;
 }
