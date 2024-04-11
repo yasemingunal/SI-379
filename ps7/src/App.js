@@ -6,6 +6,7 @@ function App() {
   const [focus, setFocus] = useState(false);
   const [onBreak, setOnBreak] = useState(false);
   const [timerRunning, setTimerRunning] = useState(false);
+  const [numTimesStarted, setNumTimesStarted] = useState(0);
 
   const [workTimer, setWorkTimer] = useState(25);
   const [breakTimer, setBreakTimer] = useState(5);
@@ -55,7 +56,7 @@ function App() {
     setFocus(idx);
     
 
-    //setTasks(tasks.map((task, index) => index === idx ? {...task, started: task.started + 1} : task));
+    setTasks(tasks.map((task, index) => index === idx ? {...task, number: task.number + 1} : task));
 
   }
 
@@ -94,16 +95,19 @@ function App() {
                   setTasks(updatedTaskList);
                   storeState(updatedTaskList);
                 }}/>
+                  
                     <button onClick={() => handleRemove(idx)}>Remove</button>
+                    {!timerRunning && <button onClick={() => startTimer(idx)}>Start Task</button>}
+                    {timerRunning && (<button onClick={resetTimer}>Cancel</button>)}
                     {focus === idx && (<div>
                 <div>Work for: {workTimer} seconds</div>
                 
-                {timerRunning && (<button onClick={resetTimer}>Cancel</button>)}
+                
               
               </div>)}
-              {!timerRunning && <button onClick={() => startTimer(idx)}>Start Task</button>}
+              
               <div>Break for: {breakTimer} seconds</div>
-              <div>Started: {tasks.started} times</div>
+              <div>Started: {tasks.number} times</div>
                 </li>))}
         </ul>
 

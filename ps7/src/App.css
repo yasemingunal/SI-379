@@ -1,0 +1,12 @@
+button{
+    border: blue solid;
+    background-color:lightblue;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin:10px;
+    padding:7px;
+}
+
+input{
+    border:blue solid;
+    background-color:beige;
+}
