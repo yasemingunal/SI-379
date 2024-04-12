@@ -1,22 +1,70 @@
 body{
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-
-button{
-    border: blue solid;
-    font-size:12;
-    background-color:lightblue;
-    margin:10px;
-    padding:7px;
-}
-
-button:hover{
-    padding:10px;
-}
-
 input{
     border:black solid;
-    background-color:beige;
+    background-color:rgb(246, 246, 235);
     font-size:medium;
     color:gray;
-}
+} 
+/* 
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}  */
+  
+  ul {
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  li {
+    margin: 10px;
+    padding: 10px;
+    background-color: #bfd8ea;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  li:hover {
+    transform: translateY(-5px);
+  }
+  
+  button {
+    padding: 8px 15px;
+    margin: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .timeMessage {
+    margin-top: 10px;
+    font-size: 20px;
+    color: #666;
+  }
+
+  
+  input[type='text'] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input[type='number'] {
+    padding: 8px;
+    width: 60px;
+  }
+  
