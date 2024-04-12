@@ -1,6 +1,7 @@
 import React, {useState, useRef} from 'react';
+//import { FontAwesomeIcon } from '@fortawesome/free-regular-svg-icons';
+import {faFaceSmileWink} from './@fortawesome/free-regular-svg-icons'
 //import { GrFireball } from "react-icons/gr";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { byPrefixAndName } from '@awesome.me/kit-KIT_CODE/icons'
 // const element = <FontAwesomeIcon icon={byPrefixAndName.fas['house']} />
 
@@ -48,7 +49,7 @@ function App() {
     setTimerRunning(true);
     setBreakTimerRunning(false);
     clearInterval(timerId);
-    const inputTime = parseInt(workTimerRef.current.value) * 60;
+    const inputTime = parseInt(workTimerRef.current.value);
     setWorkTimer(inputTime);
 
     const id = setInterval(() => {
@@ -71,14 +72,14 @@ function App() {
     setTimerRunning(false);
     clearInterval(timerId);
     setBreakTimerRunning(true);
-    setBreakTimer(parseInt(breakTimeRef.current.value) * 60);
+    setBreakTimer(parseInt(breakTimeRef.current.value));
     const id = setInterval(() => {
       setBreakTimer(prevTimeleft => {
         if (prevTimeleft <= 0) {
           setBreakTimerRunning(false);
           clearInterval(id);
           setTasks(tasks.map((task, index) => index === idx ? {...task, number: task.number + 1} : task)); //learned this concept from Stack Overflow & ChatGPT 
-          return 0;
+          return 0;//{faFaceSmileWink};//<FontAwesomeIcon icon= />;
         } else {
           return prevTimeleft - 1;
         }
