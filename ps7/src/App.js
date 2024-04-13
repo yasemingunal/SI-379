@@ -1,9 +1,4 @@
 import React, {useEffect, useState, useRef} from 'react';
-//import { FontAwesomeIcon } from '@fortawesome/free-regular-svg-icons';
-import {faFaceSmileWink} from './@fortawesome/free-regular-svg-icons'
-//import { GrFireball } from "react-icons/gr";
-// import { byPrefixAndName } from '@awesome.me/kit-KIT_CODE/icons'
-// const element = <FontAwesomeIcon icon={byPrefixAndName.fas['house']} />
 
 function App() {
   const [tasks, setTasks] = useState([])
@@ -24,10 +19,6 @@ function App() {
     localStorage.setItem("todos", JSON.stringify(newTasks));
   }
 
-  // useEffect(() => {
-  //   localStorage.setItem('todos', JSON.stringify(tasks));
-  // }, [tasks]);
-
   function addNewTask() {
     const newTask = {
       description: taskInpRef.current.value,
@@ -44,29 +35,50 @@ function App() {
     setTimerRunning(false);
     clearInterval(timerId);
     setTasks(tasks.filter((task, index) => index !== idx));
+    storeState(tasks);
   }
 
   function startTimer(idx){
     setTimerRunning(true);
     setBreakTimerRunning(false);
     clearInterval(timerId);
-    const inputTime = parseInt(workTimerRef.current.value);
+    const inputTime = parseInt(workTimerRef.current.value) * 60;
     setWorkTimer(inputTime);
 
     const id = setInterval(() => {
       setWorkTimer((previousTimeLeft) => {
         if (previousTimeLeft <= 0){
           clearInterval(id);
-
           startBreak(idx);
           setTimerRunning(false);
           return 0;
         } else {
-            return previousTimeLeft - 1;
+          // let minutes = Math.floor(previousTimeLeft / 60);
+          // let seconds = previousTimeLeft % 60;
+  
+          // // Add leading zeros if necessary
+          // minutes = minutes < 10 ? '0' + minutes : minutes;
+          // seconds = seconds < 10 ? '0' + seconds : seconds;
+  
+          // // Update timer display
+          // console.log(`${minutes} : ${seconds}`);
+          
+          // // Decrement the time
+          // const newTimeLeft = previousTimeLeft - 1;
+  
+          return previousTimeLeft - 1;
       }});
     }, 1000);
     setTimerId(id);
     setFocus(idx);
+  }
+
+  function formatTime(totalSeconds) {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+    return `${formattedMinutes}:${formattedSeconds}`;
   }
 
   function startBreak(idx) {
@@ -88,7 +100,6 @@ function App() {
     }, 1000);
     setTimerId(id);
     setOnBreak(idx);
-    storeState(tasks);
   }
   
   function resetTimer() { 
@@ -118,8 +129,8 @@ function App() {
                     <button onClick={() => handleRemove(idx)}>Remove</button>
                     {(!timerRunning && !breakTimerRunning) && <button class="startButton" onClick={() => startTimer(idx)}>Start Task</button>}
                     {(timerRunning || breakTimerRunning) && (<button onClick={resetTimer}>Cancel</button>)}
-                    {(focus === idx) && (<div> <div class="timeMessage">Work for: {workTimer} seconds</div></div>)}
-                    {(onBreak === idx) && (<div><div class="timeMessage">Break for: {breakTimer} seconds</div></div>)}
+                    {(focus === idx) && (<div> <div class="timeMessage">Work for: {formatTime(workTimer)} seconds</div></div>)}
+                    {(onBreak === idx) && (<div><div class="timeMessage">Break for: {formatTime(breakTimer)} seconds</div></div>)}
                   <div>Completed: {newTask.number} times 
                  </div>
                 </li>))}
