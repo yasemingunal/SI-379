@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 //import { FontAwesomeIcon } from '@fortawesome/free-regular-svg-icons';
 import {faFaceSmileWink} from './@fortawesome/free-regular-svg-icons'
 //import { GrFireball } from "react-icons/gr";
@@ -37,6 +37,7 @@ function App() {
     setTasks(tasks.concat(newTask));
     taskInpRef.current.value = "";
     storeState(tasks);
+
   } 
 
   function handleRemove(idx){
@@ -115,7 +116,7 @@ function App() {
                 }}/>
                   
                     <button onClick={() => handleRemove(idx)}>Remove</button>
-                    {(!timerRunning && !breakTimerRunning) && <button onClick={() => startTimer(idx)}>Start Task</button>}
+                    {(!timerRunning && !breakTimerRunning) && <button class="startButton" onClick={() => startTimer(idx)}>Start Task</button>}
                     {(timerRunning || breakTimerRunning) && (<button onClick={resetTimer}>Cancel</button>)}
                     {(focus === idx) && (<div> <div class="timeMessage">Work for: {workTimer} seconds</div></div>)}
                     {(onBreak === idx) && (<div><div class="timeMessage">Break for: {breakTimer} seconds</div></div>)}
