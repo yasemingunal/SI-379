@@ -48,6 +48,7 @@ function App() {
     const id = setInterval(() => {
       setWorkTimer((previousTimeLeft) => {
         if (previousTimeLeft <= 0){
+          alert("Great work, now enjoy a break!");
           clearInterval(id);
           startBreak(idx);
           setTimerRunning(false);
@@ -63,7 +64,7 @@ function App() {
   function formatTime(totalSeconds) {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes; //learned how to add trailing/leading 0s from stack overflow/chatGPT
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes; //learned how to add trailing/leading 0s from stack overflow
     const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
     return `${formattedMinutes}:${formattedSeconds}`;
   }
@@ -72,13 +73,13 @@ function App() {
     setTimerRunning(false);
     clearInterval(timerId);
     setBreakTimerRunning(true);
-    setBreakTimer(parseInt(breakTimeRef.current.value));
+    setBreakTimer(parseInt(breakTimeRef.current.value) * 60);
     const id = setInterval(() => {
       setBreakTimer(prevTimeleft => {
         if (prevTimeleft <= 0) {
           setBreakTimerRunning(false);
           clearInterval(id);
-          setTasks(tasks.map((task, index) => index === idx ? {...task, number: task.number + 1} : task)); //learned this concept from Stack Overflow & ChatGPT 
+          setTasks(tasks.map((task, index) => index === idx ? {...task, number: task.number + 1} : task)); //learned this concept from Stack Overflow 
           return 0;//{faFaceSmileWink};//<FontAwesomeIcon icon= />;
         } else {
           return prevTimeleft - 1;
@@ -87,6 +88,7 @@ function App() {
     }, 1000);
     setTimerId(id);
     setOnBreak(idx);
+    storeState(tasks);
   }
   
   function resetTimer() { 
