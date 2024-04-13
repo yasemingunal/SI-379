@@ -53,19 +53,6 @@ function App() {
           setTimerRunning(false);
           return 0;
         } else {
-          // let minutes = Math.floor(previousTimeLeft / 60);
-          // let seconds = previousTimeLeft % 60;
-  
-          // // Add leading zeros if necessary
-          // minutes = minutes < 10 ? '0' + minutes : minutes;
-          // seconds = seconds < 10 ? '0' + seconds : seconds;
-  
-          // // Update timer display
-          // console.log(`${minutes} : ${seconds}`);
-          
-          // // Decrement the time
-          // const newTimeLeft = previousTimeLeft - 1;
-  
           return previousTimeLeft - 1;
       }});
     }, 1000);
@@ -76,7 +63,7 @@ function App() {
   function formatTime(totalSeconds) {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes; //learned how to add trailing/leading 0s from stack overflow/chatGPT
     const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
     return `${formattedMinutes}:${formattedSeconds}`;
   }
