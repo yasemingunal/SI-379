@@ -2,7 +2,7 @@
 // Piano variables:
 const pianoDiv = document.querySelector('.piano');
 const listenDiv = document.querySelector(".listenDiv")
-
+const instructionsDiv = document.querySelector('.instructions')
 
 const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const blackKeys = ['C#', 'D#', 'F#', 'G#', 'A#'];
@@ -27,6 +27,7 @@ function createPiano() {
     }
 }
 createPiano();
+
 
 
 //FREE PLAY: 
@@ -83,24 +84,71 @@ learnButton.addEventListener('click', () => {
 })
 
 listenButton.addEventListener("click", () => {
+    let listenInstructions = document.createElement("h1");
+    listenInstructions.innerHTML = "Select one of these pieces to listen to: ";
+    instructionsDiv.append(listenInstructions);
 
     //get three song URLs, append them as buttons the listenDiv element 
+    //let furButton = document.createElement("button");
+    let furTitle = document.createElement("h3");
+    let clareTitle = document.createElement("h3");
 
-    const furUrl = 'https://spotify81.p.rapidapi.com/download_track?q=Fur%20Elise&onlyLinks=1';
-    const options = {
-        method: 'GET',
-        headers: {
-            'X-RapidAPI-Key': 'd8b3104eb9msh3ecd4325e9378b6p1b25e3jsn9fec64e3cc2c',
-            'X-RapidAPI-Host': 'spotify81.p.rapidapi.com'
+    let stopFurButton = document.createElement("button");
+    let playFurButton = document.createElement("button");
+    let stopClareButton = document.createElement("button");
+    let playClareButton = document.createElement("button");
+
+    furTitle.innerHTML = "Fur Elise";
+    furTitle.classList.add("songTitle");
+    clareTitle.innerHTML = "Clare de Lune"
+    clareTitle.classList.add("songTitle");
+
+    stopFurButton.innerHTML = 'Stop';
+    playFurButton.innerHTML = "Play";
+    stopClareButton.innerHTML = 'Stop';
+    playClareButton.innerHTML = "Play";
+
+    listenDiv.append(furTitle);
+    listenDiv.append(playFurButton);
+    listenDiv.append(stopFurButton);
+    listenDiv.append(clareTitle);
+    listenDiv.append(playClareButton);
+    listenDiv.append(stopClareButton);
+
+    stopFurButton.disabled = true;
+    stopClareButton.disabled = true;
+
+
+    playFurButton.addEventListener("click", () => {
+        stopFurButton.disabled = false;
+        playFurButton.disabled = true;
+        const furUrl = 'https://spotify81.p.rapidapi.com/download_track?q=Fur%20Elise&onlyLinks=1';
+        const options = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': 'd8b3104eb9msh3ecd4325e9378b6p1b25e3jsn9fec64e3cc2c',
+                'X-RapidAPI-Host': 'spotify81.p.rapidapi.com'
+            }
         }
-    }
-    async function getData() {
-        const response = await fetch(furUrl, options);
-        const result = await response.json();
-        console.log(result[0]['url']);
-    }
-    
-    //getData();
-})
+        async function getData() {
+            const response = await fetch(furUrl, options);
+            const result = await response.json();
+            const url = result[0]['url'];
+            const furAud = document.createElement("audio");
+            furAud.src = url;
+            furAud.play();
+            stopFurButton.addEventListener("click", () =>{
+                furAud.pause();
+                stopFurButton.disabled = true;
+                playFurButton.disabled = false;
+            })
 
-	
+        getData();
+    }})
+
+    playClareButton.addEventListener("click", () => {
+        stopClareButton.disabled = false;
+        playClareButton.disabled = true;
+})
+    
+});

@@ -49,19 +49,14 @@ button{
     visibility:visible;
 }
 
-/* 
-.whitekey{
-    width: 50px;
-    height: 150px;
-    border: 2px solid black;
-    display: flex;
+.songTitle{
+    border:black solid 2px;
+    color:black;
     background-color:white;
 }
 
-.blackkey{
-    width:25px;
-    height:100px;
-    background-color:black;
-    display:flex;
-    margin:-5px -5px;
-} */
+button:disabled,
+button[disabled]{
+    background-color:lightgray;
+    border:none;
+}
