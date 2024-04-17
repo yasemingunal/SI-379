@@ -39,7 +39,7 @@ button{
 
 .clicked{
     border-style: dashed;
-    border-color:red;
+    /* border-color:red; */
 }
 .disappear{
     visibility: hidden;

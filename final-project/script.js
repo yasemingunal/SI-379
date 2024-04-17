@@ -1,12 +1,17 @@
 
 // Piano variables:
 const pianoDiv = document.querySelector('.piano');
+const listenDiv = document.querySelector(".listenDiv")
+
+
 const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const blackKeys = ['C#', 'D#', 'F#', 'G#', 'A#'];
 const keys = ['C', 'C#', 'D', 'D#', 'E', "X", 'F','F#', 'G', 'G#', 'A', 'A#', 'B', 'X'];
+const keyNames = ['C', 'C#', 'D', 'D#', 'E', 'F','F#', 'G', 'G#', 'A', 'A#', 'B']
 
 //buttons:
 const learnButton = document.querySelector("#learn");
+const listenButton = document.querySelector("#listen");
 
 //screens activated via buttons:
 let learningDiv = document.querySelector(".learningDiv");
@@ -47,36 +52,55 @@ learnButton.addEventListener('click', () => {
     let score = document.createElement("p");
     let instruction = document.createElement("p");
     let scoreNum = 0;
-    let quizNote = keys[Math.floor((Math.random()*keys.length))]
-    console.log(quizNote);
 
-    score.innerText = `Score: ${scoreNum}`;
-    instruction.innerText = `Play a ${quizNote}`
 
-    learningDiv.append(instruction);
-    learningDiv.append(score);
-
-    if (quizNote === clickedKeyID){ //error: clickedKeyID not defined (only defined in cb function above)
-        score++;
+    for (let i=0; i<10; i++){
+        let quizNote = keyNames[Math.floor((Math.random()*keyNames.length))]
+        console.log(quizNote);
         score.innerText = `Score: ${scoreNum}`;
-        console.log('right note');
-    } else { console.log('wrong note')};
+        instruction.innerText = `Play a ${quizNote}`
+
+        learningDiv.append(instruction);
+        learningDiv.append(score);
+    }
+    
+    // for (let key of keyDivs){
+    //     key.addEventListener("click", () => {
+    //         const clickedKeyID = key.id;
+    //         key.classList.add('clicked'); //get the el with the clicked class 
+    //         if (quizNote === clickedKeyID){
+    //             key.style.border = "2px green dashed";
+    //             scoreNum++;
+    //             score.innerText = `Score: ${scoreNum}`;               
+    //         } else { 
+    //             key.style.border = "2px red dashed";
+    //         };
+    //         setTimeout(() => {
+    //             key.style.border = 'black solid';
+    //             }, 1000);
+    //     console.log("clicked ", clickedKeyID)});
+    // }
 })
 
+listenButton.addEventListener("click", () => {
 
-const url = 'https://spotify81.p.rapidapi.com/download_track?q=Fur%20Elise&onlyLinks=1';
-const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': 'd8b3104eb9msh3ecd4325e9378b6p1b25e3jsn9fec64e3cc2c',
-		'X-RapidAPI-Host': 'spotify81.p.rapidapi.com'
-	}
-}
-async function getData() {
-    const response = await fetch(url, options);
-	const result = await response.text();
-	console.log(result);
-}
+    //get three song URLs, append them as buttons the listenDiv element 
 
-//getData();
+    const furUrl = 'https://spotify81.p.rapidapi.com/download_track?q=Fur%20Elise&onlyLinks=1';
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': 'd8b3104eb9msh3ecd4325e9378b6p1b25e3jsn9fec64e3cc2c',
+            'X-RapidAPI-Host': 'spotify81.p.rapidapi.com'
+        }
+    }
+    async function getData() {
+        const response = await fetch(furUrl, options);
+        const result = await response.json();
+        console.log(result[0]['url']);
+    }
+    
+    //getData();
+})
+
 	
