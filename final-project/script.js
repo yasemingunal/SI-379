@@ -9,6 +9,10 @@ const blackKeys = ['C#', 'D#', 'F#', 'G#', 'A#'];
 const keys = ['C', 'C#', 'D', 'D#', 'E', "X", 'F','F#', 'G', 'G#', 'A', 'A#', 'B', 'X'];
 const keyNames = ['C', 'C#', 'D', 'D#', 'E', 'F','F#', 'G', 'G#', 'A', 'A#', 'B']
 
+
+
+
+
 //buttons:
 const learnButton = document.querySelector("#learn");
 const listenButton = document.querySelector("#listen");
@@ -25,14 +29,21 @@ function createPiano() {
         newKey.classList.add('key');
         pianoDiv.append(newKey);
     }
+
+    let csound = document.createElement('audio');
+    csound.src = "notes/piano-mp3_C3.mp3";
+    document.getElementById("C").appendChild(csound);
+
+    //add rest of sounds; add event listener (on click, play sound -- like the songs in the listen section)
+
 }
 createPiano();
-
+const keyDivs = document.querySelectorAll('.key')
 
 
 //FREE PLAY: 
-const keyDivs = document.querySelectorAll('.key')
 for (let key of keyDivs){
+    // add clicked differentiator to each key 
     key.addEventListener("click", () => {
         const clickedKeyID = key.id;
         // key.classList.add('clicked');
@@ -48,7 +59,7 @@ for (let key of keyDivs){
 }
 
 
-// let clickedKey = document.querySelector(".clicked");
+
 
 // LEARN TO PLAY: 
 learnButton.addEventListener('click', () => {
@@ -109,13 +120,18 @@ learnButton.addEventListener('click', () => {
     // }
 })
 
+
+
+
+
+
+// LISTEN FEATURE: *this is completed*
 listenButton.addEventListener("click", () => {
     let listenInstructions = document.createElement("h1");
     listenInstructions.innerHTML = "Select one of these pieces to listen to: ";
     instructionsDiv.append(listenInstructions);
 
     //get three song URLs, append them as buttons the listenDiv element 
-    //let furButton = document.createElement("button");
     let furTitle = document.createElement("h3");
     let clareTitle = document.createElement("h3");
     let moonTitle = document.createElement("h3");
