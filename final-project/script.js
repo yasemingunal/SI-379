@@ -1,16 +1,14 @@
+// const { random } = require("animejs");
 
 // Piano variables:
 const pianoDiv = document.querySelector('.piano');
 const listenDiv = document.querySelector(".listenDiv")
 const instructionsDiv = document.querySelector('.instructions')
 
-const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-const blackKeys = ['C#', 'D#', 'F#', 'G#', 'A#'];
-const keys = ['C', 'C#', 'D', 'D#', 'E', "X", 'F','F#', 'G', 'G#', 'A', 'A#', 'B', 'X'];
-const keyNames = ['C', 'C#', 'D', 'D#', 'E', 'F','F#', 'G', 'G#', 'A', 'A#', 'B']
-
-
-
+const keys = ['C3', 'Db3', 'D3', 'Eb3', 'E3', "X", 'F3','Gb3', 'G3', 'Ab3', 'A3', 'Bb3', 'B3', 'X'];
+const keyNames = {'C': 'C3', 'D flat': 'Db3', 'D':'D3',
+                    'E flat':'Eb3', 'E': 'E3', 'F':'F3', 'G flat': 'Gb3', 
+                    'A flat': 'Ab3', 'A':'A3', 'B flat': 'Bb3', 'B': 'B3'}
 
 
 //buttons:
@@ -20,7 +18,7 @@ const listenButton = document.querySelector("#listen");
 //screens activated via buttons:
 let learningDiv = document.querySelector(".learningDiv");
 learningDiv.classList.add('disappear');
-
+let clickedKey = null;
 //functions & default interface setup:
 function createPiano() {
     for (let i = 0; i<keys.length; i++){
@@ -28,38 +26,26 @@ function createPiano() {
         newKey.setAttribute('id', keys[i]);
         newKey.classList.add('key');
         pianoDiv.append(newKey);
+
+        newKey.addEventListener('click', () => {
+            const note = newKey.id;
+            playSound(note)
+            newKey.style.border = "2px red dashed";
+            newKey.classList.add('clicked');
+            setTimeout(() => {
+                newKey.style.border = 'black solid';
+                newKey.classList.remove('clicked');
+            }, 1000);
+            clickedKey = note;
+        })
     }
-
-    let csound = document.createElement('audio');
-    csound.src = "notes/piano-mp3_C3.mp3";
-    document.getElementById("C").appendChild(csound);
-
-    //add rest of sounds; add event listener (on click, play sound -- like the songs in the listen section)
-
+    function playSound(note){
+        const sound = new Audio(`notes/piano-mp3_${note}.mp3`);
+        sound.play();
+    }
 }
 createPiano();
 const keyDivs = document.querySelectorAll('.key')
-
-
-//FREE PLAY: 
-for (let key of keyDivs){
-    // add clicked differentiator to each key 
-    key.addEventListener("click", () => {
-        const clickedKeyID = key.id;
-        // key.classList.add('clicked');
-        key.style.border = "2px red dashed";
-        key.classList.add('clicked');
-        setTimeout(() => {
-            key.style.border = 'black solid';
-            key.classList.remove('clicked');
-            // key.classList.remove('clicked')
-        }, 1000);
-
-    console.log("clicked ", clickedKeyID)});
-}
-
-
-
 
 // LEARN TO PLAY: 
 learnButton.addEventListener('click', () => {
@@ -70,31 +56,17 @@ learnButton.addEventListener('click', () => {
     let instruction = document.createElement("p");
     let scoreNum = 0;
 
-    for (let key of keyDivs){
-        key.addEventListener("click", () => {
-            let clickedKey = key.id;
-            // key.classList.add('clicked');
-            key.style.border = "2px red dashed";
-            key.classList.add('clicked');
-            setTimeout(() => {
-                key.style.border = 'black solid';
-                key.classList.remove('clicked');
-                // key.classList.remove('clicked')
-            }, 1000);
-    
-        console.log("clicked ", clickedKey)});
-    }
-
     for (let i=0; i<10; i++){
-        let quizNote = keyNames[Math.floor((Math.random()*keyNames.length))]
+        let keysList = Object.keys(keyNames);
+        let randomIndex = Math.floor(Math.random() * keysList.length)
+        let quizNote = keyNames[randomIndex]
         console.log(quizNote);
         score.innerText = `Score: ${scoreNum}`;
-        instruction.innerText = `Play a ${quizNote}`
+        instruction.innerText = `Play a ${keysList[randomIndex]}`
 
         learningDiv.append(instruction);
         learningDiv.append(score);
-        console.log(clickedKey)
-        if (clickedKey == quizNote){
+        if (clickedKey === quizNote){
             scoreNum++;
             score.innerText = `Score: ${scoreNum}`;
             console.log('correct');
@@ -102,27 +74,7 @@ learnButton.addEventListener('click', () => {
             console.log('incorrect');
         }
     }
-    // for (let key of keyDivs){
-    //     key.addEventListener("click", () => {
-    //         const clickedKeyID = key.id;
-    //         key.classList.add('clicked'); //get the el with the clicked class 
-    //         if (quizNote === clickedKeyID){
-    //             key.style.border = "2px green dashed";
-    //             scoreNum++;
-    //             score.innerText = `Score: ${scoreNum}`;               
-    //         } else { 
-    //             key.style.border = "2px red dashed";
-    //         };
-    //         setTimeout(() => {
-    //             key.style.border = 'black solid';
-    //             }, 1000);
-    //     console.log("clicked ", clickedKeyID)});
-    // }
 })
-
-
-
-
 
 
 // LISTEN FEATURE: *this is completed*
