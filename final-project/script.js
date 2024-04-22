@@ -1,5 +1,6 @@
-// const { random } = require("animejs");
 
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioContext = new AudioContext();
 // Piano variables:
 const pianoDiv = document.querySelector('.piano');
 const listenDiv = document.querySelector(".listenDiv")
@@ -14,11 +15,19 @@ const keyNames = {'C': 'C3', 'D flat': 'Db3', 'D':'D3',
 //buttons:
 const learnButton = document.querySelector("#learn");
 const listenButton = document.querySelector("#listen");
+const freeplayButton = document.querySelector("#play");
+const distortButton = document.querySelector("#distort");
+
+learnButton.classList.add('disappear');
+listenButton.classList.add('disappear');
+distortButton.classList.add('disappear');
 
 //screens activated via buttons:
 let learningDiv = document.querySelector(".learningDiv");
 learningDiv.classList.add('disappear');
 let clickedKey = null;
+
+
 //functions & default interface setup:
 function createPiano() {
     for (let i = 0; i<keys.length; i++){
@@ -26,29 +35,103 @@ function createPiano() {
         newKey.setAttribute('id', keys[i]);
         newKey.classList.add('key');
         pianoDiv.append(newKey);
+    }
+}
+createPiano();
 
-        newKey.addEventListener('click', () => {
-            const note = newKey.id;
-            playSound(note)
-            newKey.style.border = "2px red dashed";
-            newKey.classList.add('clicked');
+//distort the sound: 
+function makeDistortionCurve(amount){
+    const samples = 44100;
+    const curve = new Float32Array(samples);
+    const deg = Math.PI/180
+    for (let i = 0; i<samples; i++){
+        let x = i*2 / samples-1;
+        curve[i] = (3+amount) * x * 20 * deg / (Math.PI + amount * Math.abs(x))
+    }
+    return curve;
+}
+function distortSound(sound){
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const source = audioContext.createMediaElementSource(sound);
+    const distortion = audioContext.createWaveShaper();
+    distortion.curve = makeDistortionCurve(400);
+    source.connect(distortion);
+    distortion.connect(audioContext.destination);
+    sound.play()
+}
+
+function updateDistortion() {
+    if (isDistorted){
+        distortButton.innerHTML = "Distort Sound"
+
+        isDistorted = false;
+    } else{
+        distortButton.innerHTML = "Back to Normal Sound"
+        isDistorted = true;
+    }
+}
+
+distortButton.addEventListener("click", () => {
+    updateDistortion();
+})
+
+const keyDivs = document.querySelectorAll('.key')
+
+let isDistorted = false;
+
+
+function playSound(note){
+    const sound = new Audio(`notes/piano-mp3_${note}.mp3`);
+    sound.play();
+}
+//normal sound: 
+freeplayButton.addEventListener("click", () => {
+    learningDiv.classList.remove('appear');
+    learningDiv.classList.add('disappear');
+    listenDiv.classList.remove('appear');
+    listenDiv.classList.add('disappear');
+
+    freeplayButton.classList.remove('appear');
+    freeplayButton.classList.add('disappear');
+    distortButton.classList.remove('disappear');
+    distortButton.classList.add("appear");
+    listenButton.classList.remove('disappear');
+    listenButton.classList.add("appear");
+    learnButton.classList.remove('disappear');
+    learnButton.classList.add("appear");
+
+    for (let key of keyDivs){
+        key.removeEventListener('click', () => {
+            //learned this concept on stackoverflow
+        })
+        key.addEventListener("click", () => {
+            const note = key.id;
+            const sound = new Audio(`notes/piano-mp3_${note}.mp3`);
+            if (isDistorted){
+                distortSound(sound);
+            } else{
+                playSound(note);
+            }
+            key.style.border = "2px red dashed";
+            key.classList.add('clicked');
             setTimeout(() => {
-                newKey.style.border = 'black solid';
-                newKey.classList.remove('clicked');
+                key.style.border = 'black solid';
+                key.classList.remove('clicked');
             }, 1000);
             clickedKey = note;
         })
     }
-    function playSound(note){
-        const sound = new Audio(`notes/piano-mp3_${note}.mp3`);
-        sound.play();
-    }
-}
-createPiano();
-const keyDivs = document.querySelectorAll('.key')
+});
+
 
 // LEARN TO PLAY: 
 learnButton.addEventListener('click', () => {
+    learnButton.classList.remove('appear');
+    learnButton.classList.add('disappear');
+    freeplayButton.classList.remove('disappear');
+    freeplayButton.classList.add('appear');
+    listenDiv.classList.remove('appear');
+    listenDiv.classList.add('disappear');
     learningDiv.classList.remove('disappear');
     learningDiv.classList.add('appear');
 
@@ -77,8 +160,14 @@ learnButton.addEventListener('click', () => {
 })
 
 
-// LISTEN FEATURE: *this is completed*
+// LISTEN FEATURE:
 listenButton.addEventListener("click", () => {
+    freeplayButton.classList.remove('disappear');
+    freeplayButton.classList.add('appear');
+    listenDiv.classList.remove('disappear');
+    listenDiv.classList.add('appear');
+    learningDiv.classList.remove('appear')
+    learningDiv.classList.add("disappear");
     let listenInstructions = document.createElement("h1");
     listenInstructions.innerHTML = "Select one of these pieces to listen to: ";
     instructionsDiv.append(listenInstructions);
