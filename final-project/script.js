@@ -19,9 +19,11 @@ const freeplayButton = document.querySelector("#play");
 const distortButton = document.querySelector("#distort");
 const reverbButton = document.querySelector("#reverb");
 
-learnButton.classList.add('disappear');
+//learnButton.classList.add('disappear');
 listenButton.classList.add('disappear');
 distortButton.classList.add('disappear');
+reverbButton.classList.add('disappear');
+
 
 //screens activated via buttons:
 let learningDiv = document.querySelector(".learningDiv");
@@ -129,6 +131,8 @@ freeplayButton.addEventListener("click", () => {
     listenButton.classList.add("appear");
     learnButton.classList.remove('disappear');
     learnButton.classList.add("appear");
+    reverbButton.classList.remove('disappear');
+    reverbButton.classList.add("appear");
 
     for (let key of keyDivs){
         key.removeEventListener('click', () => {
@@ -158,36 +162,47 @@ freeplayButton.addEventListener("click", () => {
 
 // LEARN TO PLAY: 
 learnButton.addEventListener('click', () => {
-    learnButton.classList.remove('appear');
-    learnButton.classList.add('disappear');
+    // learnButton.classList.remove('appear');
+    // learnButton.classList.add('disappear');
+    learnButton.innerHTML = "Quiz me again";
     freeplayButton.classList.remove('disappear');
     freeplayButton.classList.add('appear');
     listenDiv.classList.remove('appear');
     listenDiv.classList.add('disappear');
     learningDiv.classList.remove('disappear');
     learningDiv.classList.add('appear');
+    
 
     let score = document.createElement("p");
     let instruction = document.createElement("p");
+    let feedback = document.createElement("p");
     let scoreNum = 0;
 
     for (let i=0; i<10; i++){
         let keysList = Object.keys(keyNames);
         let randomIndex = Math.floor(Math.random() * keysList.length)
-        let quizNote = keyNames[randomIndex]
-        console.log(quizNote);
-        score.innerText = `Score: ${scoreNum}`;
-        instruction.innerText = `Play a ${keysList[randomIndex]}`
+        let quizNote = keysList[randomIndex]
+        let correctKey = keyNames[quizNote];
 
-        learningDiv.append(instruction);
-        learningDiv.append(score);
-        if (clickedKey === quizNote){
-            scoreNum++;
-            score.innerText = `Score: ${scoreNum}`;
-            console.log('correct');
-        } else {
-            console.log('incorrect');
+        instruction.innerText = `Play a ${keysList[randomIndex]}`;
+        feedback.innerText = "";
+
+        for (let key of keyDivs){
+            key.addEventListener('click', (ev) => {
+                if (ev.target.id === correctKey){
+                    feedback.innerHTML = "Nice!"
+                    scoreNum++
+                    score.innerText = `Score: ${scoreNum}`;
+                } else{
+                    feedback.innerHTML = `Not quite! That was a ${ev.target.id}`;
+                    score.innerText = `Score: ${scoreNum}`;
+                }
+                learningDiv.append(feedback);
+            })
         }
+        learningDiv.append(instruction);
+        learningDiv.append(feedback);
+        learningDiv.append(score);
     }
 })
 
