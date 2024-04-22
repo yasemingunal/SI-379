@@ -17,6 +17,7 @@ const learnButton = document.querySelector("#learn");
 const listenButton = document.querySelector("#listen");
 const freeplayButton = document.querySelector("#play");
 const distortButton = document.querySelector("#distort");
+const reverbButton = document.querySelector("#reverb");
 
 learnButton.classList.add('disappear');
 listenButton.classList.add('disappear');
@@ -60,10 +61,25 @@ function distortSound(sound){
     sound.play()
 }
 
+async function reverbSound(sound){
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const audioEl = new Audio(sound);
+    const source = audioContext.createMediaElementSource(audioEl);
+    const convolver = audioContext.createConvolver();
+
+    const response = await fetch(sound);
+    const arrayBuffer = await response.arrayBuffer();
+    const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
+    convolver.buffer = decodedAudio;
+    source.connect(convolver);
+    convolver.connect(audioContext.destination);
+    audioEl.play();
+}
+
+
 function updateDistortion() {
     if (isDistorted){
         distortButton.innerHTML = "Distort Sound"
-
         isDistorted = false;
     } else{
         distortButton.innerHTML = "Back to Normal Sound"
@@ -71,14 +87,28 @@ function updateDistortion() {
     }
 }
 
+function updateReverb(){
+    if (isReverbed){
+        reverbButton.innerHTML = "Reverb Sound";
+        isReverbed = false;
+    } else {
+        reverbButton.innerHTML = "Back to Normal Sound"
+        isReverbed = true;
+    }
+}
+
+
 distortButton.addEventListener("click", () => {
     updateDistortion();
 })
 
+reverbButton.addEventListener("click", () => {
+    updateReverb();
+});
+
 const keyDivs = document.querySelectorAll('.key')
-
 let isDistorted = false;
-
+let isReverbed = false;
 
 function playSound(note){
     const sound = new Audio(`notes/piano-mp3_${note}.mp3`);
@@ -109,6 +139,8 @@ freeplayButton.addEventListener("click", () => {
             const sound = new Audio(`notes/piano-mp3_${note}.mp3`);
             if (isDistorted){
                 distortSound(sound);
+            } else if (isReverbed){
+                reverbSound(`notes/piano-mp3_${note}.mp3`);
             } else{
                 playSound(note);
             }
