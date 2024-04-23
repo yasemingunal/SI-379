@@ -11,6 +11,9 @@ const keyNames = {'C': 'C3', 'D flat': 'Db3', 'D':'D3',
                     'E flat':'Eb3', 'E': 'E3', 'F':'F3', 'G flat': 'Gb3', 
                     'A flat': 'Ab3', 'A':'A3', 'B flat': 'Bb3', 'B': 'B3'}
 
+const keyNames2 = {'C3':'C', 'Db3':'D flat', 'D3':'D', 'Eb3':'E flat', 'E3':'E',
+                    'F3':'F', 'Gb3':'G flat', 'Ab3': 'A flat', 'A3':'A', 'Bb3':'B flat', 'B3':'B'}
+
 
 //buttons:
 const learnButton = document.querySelector("#learn");
@@ -178,33 +181,43 @@ learnButton.addEventListener('click', () => {
     let feedback = document.createElement("p");
     let scoreNum = 0;
 
-    for (let i=0; i<10; i++){
-        let keysList = Object.keys(keyNames);
-        let randomIndex = Math.floor(Math.random() * keysList.length)
-        let quizNote = keysList[randomIndex]
-        let correctKey = keyNames[quizNote];
+    let keysList = Object.keys(keyNames);
+    let randomIndex = Math.floor(Math.random() * keysList.length);
+    let quizNote = keysList[randomIndex];
+    console.log("quizNote: ", quizNote);
+    let correctKey = keyNames[quizNote];
+    console.log("correctKey: ", correctKey)
 
-        instruction.innerText = `Play a ${keysList[randomIndex]}`;
-        feedback.innerText = "";
+    instruction.innerText = `Play a ${keysList[randomIndex]}`;
+    feedback.innerText = "";
 
-        for (let key of keyDivs){
-            key.addEventListener('click', (ev) => {
-                if (ev.target.id === correctKey){
-                    feedback.innerHTML = "Nice!"
-                    scoreNum++
-                    score.innerText = `Score: ${scoreNum}`;
-                } else{
-                    feedback.innerHTML = `Not quite! That was a ${ev.target.id}`;
-                    score.innerText = `Score: ${scoreNum}`;
-                }
+    learningDiv.append(instruction);
+    learningDiv.append(feedback);
+    for (let key of keyDivs){
+        key.addEventListener('click', (ev) => {
+            console.log(keyNames2[correctKey]);
+            console.log(keyNames2[ev.target.id]);
+            if (keyNames2[ev.target.id] === keyNames2[correctKey]){
+                //console.log("clicked key: ", keyNames2[ev.target.id]);
+                feedback.innerHTML = "Nice!"
+                scoreNum++
+                score.innerText = `Score: ${scoreNum}`;
                 learningDiv.append(feedback);
-            })
-        }
-        learningDiv.append(instruction);
-        learningDiv.append(feedback);
-        learningDiv.append(score);
+                learningDiv.append(score);
+            } else{
+                feedback.innerHTML = `Not quite! That was a ${keyNames2[ev.target.id]}`;
+                score.innerText = `Score: ${scoreNum}`;
+                learningDiv.append(feedback);
+                learningDiv.append(score);
+            }
+            learningDiv.append(feedback);
+            learningDiv.append(score);
+            quizNote = "";
+            correctKey = "";
+        })
     }
-})
+
+});
 
 
 // LISTEN FEATURE:
