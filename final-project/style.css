@@ -1,62 +1,86 @@
 .piano {
     display: flex;
     justify-content: center;
-    /* align-items: center; */
     height: 200px;
-}
-
-.buttons{
+  }
+  
+  .buttons {
     display: flex;
     justify-content: center;
-    margin:30px;
-}
-
-button{
-    color:white;
-    background-color:black;
-    margin: 5px;
-    padding:5px;
-    display:inline-block;
-}
-
-.key:nth-child(odd) {
+    margin: 30px;
+  }
+  
+  button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    background-color: #1d5796;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .key:nth-child(odd) {
     width: 50px;
     height: 150px;
     border: 1.5px solid black;
     display: flex;
-}  
-.key:nth-child(even){
-    width:30px;
-    height:100px;
-    background-color:black;
-    display:flex;
-    margin:-5px -5px;
-}
-
-.key:nth-child(6), .key:nth-child(14){
-    visibility:hidden;
-}
-
-.clicked{
-    border-style: dashed;
-    /* border-color:red; */
-}
-.disappear{
+  }
+  
+  .key:nth-child(even) {
+    width: 30px;
+    height: 100px;
+    background-color: black;
+    display: flex;
+    margin: -5px -5px;
+  }
+  
+  .key:nth-child(6),
+  .key:nth-child(14) {
     visibility: hidden;
-}
-
-.appear{
-    visibility:visible;
-}
-
-.songTitle{
-    border:black solid 2px;
-    color:black;
-    background-color:white;
-}
-
-button:disabled,
-button[disabled]{
-    background-color:lightgray;
-    border:none;
-}
+  }
+  
+  .key:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .clicked {
+    border-style: dashed;
+  }
+  
+  .disappear {
+    visibility: hidden;
+  }
+  
+  .appear {
+    visibility: visible;
+  }
+  
+  .listenDiv {
+    display: block;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .songTitle {
+    display: flex;
+    align-items: center;
+    border: black solid 2px;
+    width: fit-content;
+    padding: 10px;
+    color: black;
+    background-color: white;
+    margin-bottom: 20px; /* Add margin bottom for spacing */
+  }
+  
+  button:disabled,
+  button[disabled] {
+    background-color: lightgray;
+    border: none;
+  }
+  
+  .instructions {
+    text-align: center;
+  }
