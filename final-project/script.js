@@ -12,7 +12,7 @@ const keyNames = {'C': 'C3', 'D flat': 'Db3', 'D':'D3',
                     'A flat': 'Ab3', 'A':'A3', 'B flat': 'Bb3', 'B': 'B3'}
 
 const keyNames2 = {'C3':'C', 'Db3':'D flat', 'D3':'D', 'Eb3':'E flat', 'E3':'E',
-                    'F3':'F', 'Gb3':'G flat', 'Ab3': 'A flat', 'A3':'A', 'Bb3':'B flat', 'B3':'B'}
+                    'F3':'F', 'Gb3':'G flat', 'G3':'G', 'Ab3': 'A flat', 'A3':'A', 'Bb3':'B flat', 'B3':'B'}
 
 
 //buttons:
@@ -49,9 +49,9 @@ function createPiano() {
 }
 createPiano();
 
-//distort the sound: 
+//functions to make the distortions:
 function makeDistortionCurve(amount){
-    const samples = 44100;
+    const samples = 44100; // found the 'typical' sample size online
     const curve = new Float32Array(samples);
     const deg = Math.PI/180
     for (let i = 0; i<samples; i++){
@@ -84,7 +84,7 @@ async function reverbSound(sound){
     audioEl.play();
 }
 
-
+//similar to the toggling concept 
 function updateDistortion() {
     if (isDistorted){
         distortButton.innerHTML = "Distort Sound"
@@ -94,7 +94,6 @@ function updateDistortion() {
         isDistorted = true;
     }
 }
-
 function updateReverb(){
     if (isReverbed){
         reverbButton.innerHTML = "Reverb Sound";
@@ -104,7 +103,6 @@ function updateReverb(){
         isReverbed = true;
     }
 }
-
 
 distortButton.addEventListener("click", () => {
     updateDistortion();
@@ -200,7 +198,44 @@ learnButton.addEventListener('click', () => {
     learningDiv.append(score);
 
     for (let key of keyDivs) {
+        //animate the feedback message to easein/ease out
         key.addEventListener('click', (ev) => {
+            anime({
+                targets: feedback,
+                opacity: 1,
+                duration: 500,
+                easing: 'easeInOutQuad',
+                loop: false,
+                complete: () => {
+                    setTimeout(() => {
+                        anime({
+                            targets: feedback,
+                            opacity: 0,
+                            duration: 500,
+                            easing: 'easeInOutQuad'
+                        });
+                    }, 1000);
+                }
+            });
+            //animate the size of the key when the user clicks it 
+            anime({
+                targets: ev.target,
+                scale: 1.2,
+                duration: 200,
+                easing: 'easeInOutQuad',
+                direction: 'alternate',
+                loop: false,
+                complete: () => {
+                    setTimeout(() => {
+                        anime({
+                            targets: ev.target,
+                            scale: 1,
+                            duration: 200,
+                            easing: 'easeInOutQuad'
+                        });
+                    }, 1000);
+                }
+            });
             if (key.id === correctKey) { 
                 feedback.innerHTML = "Nice!";
                 scoreNum++;
@@ -208,7 +243,6 @@ learnButton.addEventListener('click', () => {
             } else {
                 feedback.innerHTML = `Not quite! That was a ${keyNames2[ev.target.id]}`;
             }
-            // Generate a new question after each attempt
             randomIndex = Math.floor(Math.random() * keysList.length);
             quizNote = keysList[randomIndex];
             correctKey = keyNames[quizNote];
