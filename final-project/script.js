@@ -52,6 +52,7 @@ createPiano();
 //functions to make the distortions:
 function makeDistortionCurve(amount){
     const samples = 44100; // found the 'typical' sample size online
+    // went off of sample formulas from the WebAudio API documentation & examples
     const curve = new Float32Array(samples);
     const deg = Math.PI/180
     for (let i = 0; i<samples; i++){
@@ -274,7 +275,7 @@ learningDiv.classList.add("disappear");
 listenInstructions.innerHTML = "You can also select one of these pieces to listen to: ";
 listenDiv.append(listenInstructions);
 
-//get three song URLs, append them as buttons the listenDiv element 
+//get song URLs, append them as buttons the listenDiv element 
 let furTitle = document.createElement("h3");
 let clareTitle = document.createElement("h3");
 let moonTitle = document.createElement("h3");
@@ -300,9 +301,9 @@ playClareButton.innerHTML = "Play";
 stopMoonButton.innerHTML = 'Stop';
 playMoonButton.innerHTML = "Play";
 
-listenDiv.append(furTitle);
-listenDiv.append(playFurButton);
-listenDiv.append(stopFurButton);
+// listenDiv.append(furTitle);
+// listenDiv.append(playFurButton);
+// listenDiv.append(stopFurButton);
 listenDiv.append(clareTitle);
 listenDiv.append(playClareButton);
 listenDiv.append(stopClareButton);
@@ -315,32 +316,32 @@ stopClareButton.disabled = true;
 stopMoonButton.disabled = true;
 
 
-playFurButton.addEventListener("click", () => {
-    stopFurButton.disabled = false;
-    playFurButton.disabled = true;
-    const furUrl = 'https://spotify81.p.rapidapi.com/download_track?q=Fur%20Elise&onlyLinks=1';
-    const options = {
-        method: 'GET',
-        headers: {
-            'X-RapidAPI-Key': 'd8b3104eb9msh3ecd4325e9378b6p1b25e3jsn9fec64e3cc2c',
-            'X-RapidAPI-Host': 'spotify81.p.rapidapi.com'
-        }
-    }
-    async function getData() {
-        const response = await fetch(furUrl, options);
-        const result = await response.json();
-        const url = result[0]['url'];
-        const furAud = document.createElement("audio");
-        furAud.src = url;
-        furAud.play();
-        stopFurButton.addEventListener("click", () =>{
-            furAud.pause();
-            stopFurButton.disabled = true;
-            playFurButton.disabled = false;
-        })
-}
-getData();
-})
+// playFurButton.addEventListener("click", () => {
+//     stopFurButton.disabled = false;
+//     playFurButton.disabled = true;
+//     const furUrl = 'https://spotify81.p.rapidapi.com/download_track?q=Fur%20Elise&onlyLinks=1';
+//     const options = {
+//         method: 'GET',
+//         headers: {
+//             'X-RapidAPI-Key': 'd8b3104eb9msh3ecd4325e9378b6p1b25e3jsn9fec64e3cc2c',
+//             'X-RapidAPI-Host': 'spotify81.p.rapidapi.com'
+//         }
+//     }
+//     async function getData() {
+//         const response = await fetch(furUrl, options);
+//         const result = await response.json();
+//         const url = result[0]['url'];
+//         const furAud = document.createElement("audio");
+//         furAud.src = url;
+//         furAud.play();
+//         stopFurButton.addEventListener("click", () =>{
+//             furAud.pause();
+//             stopFurButton.disabled = true;
+//             playFurButton.disabled = false;
+//         })
+// }
+// getData();
+// })
 
 playClareButton.addEventListener("click", () => {
     stopClareButton.disabled = false;
